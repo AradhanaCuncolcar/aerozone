@@ -13,13 +13,6 @@ st.markdown("""
     <style>
     .stApp { background-color: #f8fafc; }
     h1, h2, h3 { color: #091e42; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    .metric-card {
-        background-color: #ffffff;
-        border: 1px solid #dfe1e6;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
     .summary-box {
         background: linear-gradient(135deg, #091e42 0%, #0747a6 100%);
         color: white;
@@ -63,7 +56,7 @@ st.sidebar.subheader("📈 Environmental Filter")
 min_aqi, max_aqi = int(df_demo['Local_AQI_At_Purchase'].min()), int(df_demo['Local_AQI_At_Purchase'].max())
 selected_aqi = st.sidebar.slider("Purchase Air Quality Index (AQI)", min_aqi, max_aqi, (min_aqi, max_aqi))
 
-# Apply filters dynamically
+# Apply filters dynamically to demographic data
 filtered_demo = df_demo[
     (df_demo['Geographic_Region'].isin(selected_regions)) &
     (df_demo['Customer_Persona'].isin(selected_personas)) &
@@ -76,7 +69,7 @@ filtered_demo = df_demo[
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Interactive Data Room")
-st.markdown("Explore deep real-time analytics below. *Tip: You can zoom, pan, and hover over any chart element using your cursor.*")
+st.markdown("Explore deep real-time analytics below. *Tip: Use your cursor to zoom, pan, and hover over any chart element for exact figures.*")
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("M36 Annual Recurring Revenue", f"${(df_fin['Subscription_Revenue'].iloc[-1] * 12):,.0f}", "+185% YoY")
@@ -87,7 +80,7 @@ col4.metric("Customer Acquisition Cost", f"${df_fin['CAC'].iloc[-1]:.2f}", "-41%
 st.markdown("---")
 
 # ------------------------------------------------------------------------------
-# 5. Section 1: Financial Trajectory & Unit Economics
+# 5. Section 1: Financial Trajectory & Scalability Engine
 # ------------------------------------------------------------------------------
 st.subheader("📊 1. Financial Trajectory & Scalability Engine")
 st.markdown("Hover to view monthly breakdowns. Notice how recurring SaaS revenue dampens hardware seasonality spikes.")
@@ -114,6 +107,13 @@ with c2:
     fig_unit.update_yaxes(title_text="Units Sold", secondary_y=False)
     fig_unit.update_yaxes(title_text="CAC ($)", secondary_y=True)
     st.plotly_chart(fig_unit, use_container_width=True)
+
+# Additional Financial Insight Graph: Marketing Spend vs Total Revenue Efficiency
+fig_mkt = go.Figure()
+fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color='#ab47bc', width=2)))
+fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color='#2e7d32', width=2, dash='dot')))
+fig_mkt.update_layout(title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", template="plotly_white", height=320, hovermode="x unified")
+st.plotly_chart(fig_mkt, use_container_width=True)
 
 # Gross margin curve expansion
 fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS ($55/$45)", color_discrete_sequence=['#36b37e'])
@@ -155,6 +155,14 @@ with d2:
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
         st.warning("No data available for channels.")
+
+# Additional Synthetic Data Insight Graph: Regional Sales Volume Distribution
+if not filtered_demo.empty:
+    reg_df = filtered_demo['Geographic_Region'].value_counts().reset_index()
+    reg_df.columns = ['Region', 'Orders']
+    fig_reg = px.bar(reg_df, x='Region', y='Orders', title="Geographic Sales Volume Distribution (Filtered)", color='Orders', color_continuous_scale='Teal')
+    fig_reg.update_layout(template="plotly_white", height=350)
+    st.plotly_chart(fig_reg, use_container_width=True)
 
 # Environmental Catalyst Scatter plot
 if not filtered_demo.empty:
