@@ -181,7 +181,6 @@ with in_c3:
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
-    # UPGRADED: Using a distinct discrete qualitative color sequence so every slice has a unique, vibrant color
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
@@ -224,13 +223,14 @@ with d2:
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
+        # UPGRADED: Mapped color to 'Channel' category so each horizontal bar gets a completely distinct individual color
         fig_chan = px.bar(
             chan_df, x='Count', y='Channel', orientation='h', 
             title="Top Acquisition Channels (Filtered)", 
-            color='Count',
-            color_continuous_scale='Teal'
+            color='Channel',
+            color_discrete_sequence=['#0F172A', '#0EA5E9', '#14B8A6', '#6366F1', '#F43F5E', '#F59E0B', '#10B981', '#38BDF8', '#8B5CF6']
         )
-        fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY), coloraxis_showscale=False)
+        fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY), showlegend=False)
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
         st.warning("No data available for channels.")
@@ -272,9 +272,9 @@ st.markdown("""
 # ------------------------------------------------------------------------------
 # 9. Interactive Data Table Inspector
 # ------------------------------------------------------------------------------
-st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)")
-tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
-with tab1:
-    st.dataframe(df_fin, use_container_width=True)
-with tab2:
-    st.dataframe(filtered_demo, use_container_width=True)
+with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
+    tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
+    with tab1:
+        st.dataframe(df_fin, use_container_width=True)
+    with tab2:
+        st.dataframe(filtered_demo, use_container_width=True)
