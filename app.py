@@ -186,6 +186,7 @@ else:
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 
+# Side-by-side Intro layout with Product Images
 intro_col1, intro_col2 = st.columns([1.2, 1])
 
 with intro_col1:
@@ -201,16 +202,15 @@ with intro_col1:
 with intro_col2:
     img_col1, img_col2 = st.columns(2)
     with img_col1:
-        # Fallback to local file or direct image URLs if local file is missing
         try:
             st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True)
         except Exception:
-            st.image("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80", caption="In-Action Lifestyle", use_container_width=True)
+            st.info("Place 'lifestyle_user.png' in directory.")
     with img_col2:
         try:
             st.image("product_render.png", caption="Hardware Design", use_container_width=True)
         except Exception:
-            st.image("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80", caption="Hardware Design", use_container_width=True)
+            st.info("Place 'product_render.png' in directory.")
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("Explore positive, vibrant, and fully-labeled analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
