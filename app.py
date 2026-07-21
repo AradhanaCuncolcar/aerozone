@@ -186,40 +186,41 @@ else:
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 
-# Brief Problem & History Block
-st.markdown("""
-<div style="background-color: #FFFFFF; border-radius: 16px; padding: 20px 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 6px solid #F43F5E; margin-bottom: 20px;">
-    <h4 style="margin: 0 0 12px 0; color: #1E293B;">⚠️ The Problem & Solution</h4>
-    <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 15px; line-height: 1.6;">
-        <li style="margin-bottom: 8px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
-        <li style="margin-bottom: 8px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
-        <li style="margin-bottom: 8px;"><b style="color: #34D399;">Solution: Tech Integrated - AeroZone</b></li>
-    </ul>
-</div>
-""", unsafe_allow_html=True)
+# Main two-column layout for the top section
+top_col1, top_col2 = st.columns([1.3, 0.9])
 
-# Layout: Text on the left, and the two images stacked vertically on the right
-intro_col1, intro_col2 = st.columns([1.3, 0.9])
-
-with intro_col1:
+with top_col1:
+    # 1. Problem & Solution Block (Placed on the left, reduced padding)
     st.markdown("""
-    <div class="intro-card">
-        <h3>💡 Product Vision & Innovation</h3>
-        <p><b>AeroZone</b> is a next-generation wearable personal air purifier collar engineered for urban commuters, frequent travelers, and allergy sufferers.</p>
-        <p>By actively filtering PM2.5, VOCs, and airborne allergens directly from the user's breathing zone, it establishes a personal clean-air sanctuary anywhere in the world.</p>
-        <p><b>The Ecosystem:</b> Paired with our proprietary SaaS mobile app, users receive real-time respiratory health analytics, live environmental AQI tracking, and automated filter-replacement subscriptions that power our compounding recurring revenue engine.</p>
+    <div style="background-color: #FFFFFF; border-radius: 20px; padding: 20px 25px; box-shadow: 0 8px 16px rgba(0,0,0,0.04); border: 1px solid #E2E8F0; border-left: 6px solid #F43F5E; margin-bottom: 20px;">
+        <h4 style="margin: 0 0 10px 0; color: #1E293B;">⚠️ The Problem & Solution</h4>
+        <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.5;">
+            <li style="margin-bottom: 6px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
+            <li style="margin-bottom: 6px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
+            <li><b style="color: #34D399;">Solution: Tech Integrated - AeroZone:</b> A sleek ergonomic collar projecting medical-grade clean air paired with real-time app tracking.</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
-with intro_col2:
-    # Stacked vertically in a single column to eliminate empty side-by-side space
+    # 2. Product Vision & Innovation Block (Placed directly below it on the left)
+    st.markdown("""
+    <div class="intro-card" style="margin-bottom: 0;">
+        <h3 style="margin-top: 0; font-size: 20px;">💡 Product Vision & Innovation</h3>
+        <p style="font-size: 14px; line-height: 1.5;"><b>AeroZone</b> is a next-generation wearable personal air purifier collar engineered for urban commuters, frequent travelers, and allergy sufferers.</p>
+        <p style="font-size: 14px; line-height: 1.5;">By actively filtering PM2.5, VOCs, and airborne allergens directly from the user's breathing zone, it establishes a personal clean-air sanctuary anywhere in the world.</p>
+        <p style="font-size: 14px; line-height: 1.5; margin-bottom: 0;"><b>The Ecosystem:</b> Paired with our proprietary SaaS mobile app, users receive real-time respiratory health analytics, live environmental AQI tracking, and automated filter-replacement subscriptions that power our compounding recurring revenue engine.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with top_col2:
+    # Both images stacked neatly on the right side, occupying the cleared vertical space
     try:
-        st.image("lifestyle_user.png", width=300)
+        st.image("lifestyle_user.png", caption="In-Action Lifestyle", width=420)
     except Exception:
         st.info("Place 'lifestyle_user.png' in directory.")
         
     try:
-        st.image("product_render.png", width=300)
+        st.image("product_render.png", caption="Hardware Design", width=420)
     except Exception:
         st.info("Place 'product_render.png' in directory.")
 
@@ -231,7 +232,6 @@ col1.metric("M36 Annual Recurring Revenue", f"${(df_fin['Subscription_Revenue'].
 col2.metric("Terminal Gross Margin (M36)", f"{df_fin['Gross_Margin_%'].iloc[-1]:.1f}%", "Economies of Scale")
 col3.metric("Total Hardware Units Sold", f"{df_fin['Hardware_Units_Sold'].sum():,}", "Global Penetration")
 col4.metric("Customer Acquisition Cost", f"${df_fin['CAC'].iloc[-1]:.2f}", "-41% Reduction", delta_color="inverse")
-
 # ------------------------------------------------------------------------------
 # 5. Section 1: Financial Trajectory & Scalability Engine
 # ------------------------------------------------------------------------------
