@@ -200,13 +200,13 @@ with intro_col1:
     """, unsafe_allow_html=True)
 
 with intro_col2:
-    img_row1, img_row2 = st.rows(2)
-    with img_row1:
+    img_col1, img_col2 = st.columns(2)
+    with img_col1:
         try:
             st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True)
         except Exception:
             st.info("Place 'lifestyle_user.png' in directory.")
-    with img_row2:
+    with img_col2:
         try:
             st.image("product_render.png", caption="Hardware Design", use_container_width=True)
         except Exception:
