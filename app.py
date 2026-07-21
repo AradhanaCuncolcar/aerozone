@@ -201,7 +201,7 @@ with top_col1:
     # 1. Problem & Solution Block (Placed on the left, reduced padding)
     st.markdown("""
     <div style="background-color: #FFFFFF; border-radius: 20px; padding: 20px 25px; box-shadow: 0 8px 16px rgba(0,0,0,0.04); border: 1px solid #E2E8F0; border-left: 6px solid #F43F5E; margin-bottom: 20px;">
-        <h3 style="margin: 0 0 10px 0; color: #1E293B; font-size: 20px;">⚠️ The Problem & Solution</h3>
+        <h3 style="margin: 0 0 10px 0; color: #1E293B; font-size: 22px;">⚠️ The Problem & Solution</h3>
         <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.5;">
             <li style="margin-bottom: 6px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
             <li style="margin-bottom: 6px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
