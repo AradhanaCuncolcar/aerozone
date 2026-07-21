@@ -238,10 +238,10 @@ with in_c3:
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
-    # Custom color map with specific color for San Francisco and percentage-only labels
+    # Custom color map with specific color for San Francisco and percentage-only labels (using color_discrete_map)
     color_map = {
         'New York': '#38BDF8', 
-        'San Francisco': '#F43F5E',  # Changed color for San Francisco
+        'San Francisco': '#F43F5E',  
         'Tokyo': '#14B8A6', 
         'Beijing': '#A78BFA', 
         'New Delhi': '#FB7185', 
@@ -252,9 +252,9 @@ with in_c4:
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
         color='Geographic_Region',
-        color_map=color_map
+        color_discrete_map=color_map
     )
-    fig_reg_dist.update_traces(textposition='inside', textinfo='percent') # Removed names, kept percentage only
+    fig_reg_dist.update_traces(textposition='inside', textinfo='percent') # Percentage only
     fig_reg_dist.update_layout(template="plotly_white", height=380)
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
@@ -292,7 +292,7 @@ with d2:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
         
-        # Explicit unrepeated custom color mapping for all channels, giving unique colors to Health Influencers, Medical Blogs, and Airport Kiosks
+        # Explicit unrepeated custom color mapping for all channels
         channel_color_map = {
             'Instagram Ads': '#38BDF8',
             'TikTok': '#34D399',
