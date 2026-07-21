@@ -223,12 +223,12 @@ with top_col1:
 with top_col2:
     # Both images stacked neatly on the right side, occupying the cleared vertical space
     try:
-        st.image("lifestyle_user.png", width=400, height=300)
+        st.image("lifestyle_user.png", width=400, height=250)
     except Exception:
         st.info("Place 'lifestyle_user.png' in directory.")
         
     try:
-        st.image("product_render.png", width=400, height=300)
+        st.image("product_render.png", width=400, height=250)
     except Exception:
         st.info("Place 'product_render.png' in directory.")
 
