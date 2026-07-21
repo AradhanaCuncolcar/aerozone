@@ -186,6 +186,16 @@ else:
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 
+# Brief Problem & History Block
+st.markdown("""
+<div style="background-color: #FFFFFF; border-radius: 16px; padding: 20px 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 6px solid #F43F5E; margin-bottom: 20px;">
+    <h4 style="margin: 0 0 8px 0; color: #1E293B;">⚠️ The Problem & Origin</h4>
+    <p style="margin: 0; color: #475569; font-size: 15px; line-height: 1.5;">
+        Urban air pollution and recurring wildfire seasons have created an escalating global health crisis, exposing commuters and asthma sufferers to dangerous levels of PM2.5. AeroZone was founded to solve this limitation of stationary home purifiers by delivering real-time, wearable, and data-driven respiratory protection on the go.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
 # Layout: Text on the left, and the two images stacked vertically on the right
 intro_col1, intro_col2 = st.columns([1.3, 0.9])
 
