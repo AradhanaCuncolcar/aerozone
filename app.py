@@ -207,7 +207,7 @@ with intro_col2:
         st.info("Place 'lifestyle_user.png' in directory.")
         
     try:
-        st.image("product_render.png", caption="Hardware Design", use_container_width=True, , width=150)
+        st.image("product_render.png", caption="Hardware Design", use_container_width=True, width=150)
     except Exception:
         st.info("Place 'product_render.png' in directory.")
 
