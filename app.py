@@ -24,17 +24,17 @@ REGION_COLOR_MAP = {
     'London': '#00FFFF'
 }
 
-# NEW: Fresh, highly distinguishable bright pastel palette for the acquisition graph
+# NEW: Highly distinguishable, bright, and positive palette for the acquisition graph
 CHANNEL_COLOR_MAP = {
-    'Instagram Ads': '#FFB5E8',      # Pastel Pink
-    'TikTok': '#85E3FF',             # Pastel Cyan
-    'Travel Blogs': '#FFF5BA',       # Pastel Yellow
-    'Subway Posters': '#B28DFF',     # Pastel Purple
-    'Google Search': '#AFF8D8',      # Pastel Mint
-    'Facebook Ads': '#FFC9DE',       # Rose Water
-    'Health Influencers': '#6EB5FF', # Baby Blue
-    'Medical Blogs': '#FFCCF9',      # Lilac
-    'Airport Kiosks': '#F6A6FF'      # Bright Lavender
+    'Instagram Ads': '#FF595E',      # Bright Red-Pink
+    'TikTok': '#1982C4',             # Vibrant Blue
+    'Travel Blogs': '#FFCA3A',       # Bright Yellow
+    'Subway Posters': '#8AC926',     # Lime Green
+    'Google Search': '#6A4C93',      # Deep Purple
+    'Facebook Ads': '#FF9F1C',       # Bright Orange
+    'Health Influencers': '#00B4D8', # Bright Cyan
+    'Medical Blogs': '#F50057',      # Bright Magenta
+    'Airport Kiosks': '#06D6A0'      # Teal / Mint
 }
 
 st.markdown(f"""
@@ -265,7 +265,6 @@ with in_c3:
     fig_stack = px.bar(
         chan_persona, x='Acquisition_Channel', y='Count', color='Customer_Persona',
         title="Acquisition Channel Efficiency across Personas",
-        # NEW: Vibrant distinct palette for the stacked acquisition graph
         color_discrete_sequence=['#FF9CEE', '#85E3FF', '#FFF5BA'],
         text='Count'
     )
