@@ -197,7 +197,7 @@ with top_col1:
         <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.5;">
             <li style="margin-bottom: 6px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
             <li style="margin-bottom: 6px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
-            <li><b style="color: #34D399;">Solution: Tech Integrated - AeroZone:</b> A sleek ergonomic collar projecting medical-grade clean air paired with real-time app tracking.</li>
+            <li><b style="color: #34D399;">Solution: Tech Integrated - AeroZone:</b></li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -215,12 +215,12 @@ with top_col1:
 with top_col2:
     # Both images stacked neatly on the right side, occupying the cleared vertical space
     try:
-        st.image("lifestyle_user.png", caption="In-Action Lifestyle", width=420)
+        st.image("lifestyle_user.png", width=400)
     except Exception:
         st.info("Place 'lifestyle_user.png' in directory.")
         
     try:
-        st.image("product_render.png", caption="Hardware Design", width=420)
+        st.image("product_render.png", width=400)
     except Exception:
         st.info("Place 'product_render.png' in directory.")
 
