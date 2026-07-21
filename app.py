@@ -48,7 +48,7 @@ st.markdown(f"""
         padding: 20px 25px;
         box-shadow: 0 8px 16px rgba(0,0,0,0.04);
         border: 1px solid #E2E8F0;
-        text-align: center;
+        text-align: left;
     }}
 
     /* Align all metric cards to a uniform height */
