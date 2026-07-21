@@ -193,8 +193,7 @@ st.markdown("""
     <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 15px; line-height: 1.6;">
         <li style="margin-bottom: 8px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
         <li style="margin-bottom: 8px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
-        <li style="margin-bottom: 8px;"><b>AeroZone:</b> A sleek, ergonomic collar projecting a silent updraft of 99.9% medical-grade clean air directly into the breathing zone.</li>
-        <li><b>Integrated Tech:</b> Bluetooth pairs with our proprietary mobile app for real-time AQI tracking and filter management.</li>
+        <li style="margin-bottom: 8px;"><b style="color: #F43F5E;">Solution: Tech Integrated - AeroZone</b></li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
