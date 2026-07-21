@@ -181,13 +181,13 @@ else:
     dt_pad_start, dt_pad_end = None, None
 
 # ------------------------------------------------------------------------------
-# 4. Hero Intro, Product Showcase & KPIs (Top Row)[cite: 1]
+# 4. Hero Intro, Product Showcase & KPIs (Top Row)
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 
-# Side-by-side Intro layout with Product Images
-intro_col1, intro_col2 = st.columns([1.2, 1])
+# Layout: Text on the left, and the two images stacked vertically on the right
+intro_col1, intro_col2 = st.columns([1.3, 0.9])
 
 with intro_col1:
     st.markdown("""
@@ -200,17 +200,16 @@ with intro_col1:
     """, unsafe_allow_html=True)
 
 with intro_col2:
-    img_col1, img_col2 = st.columns(2)
-    with img_col1:
-        try:
-            st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True)
-        except Exception:
-            st.info("Place 'lifestyle_user.png' in directory.")
-    with img_col2:
-        try:
-            st.image("product_render.png", caption="Hardware Design", use_container_width=True)
-        except Exception:
-            st.info("Place 'product_render.png' in directory.")
+    # Stacked vertically in a single column to eliminate empty side-by-side space
+    try:
+        st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True)
+    except Exception:
+        st.info("Place 'lifestyle_user.png' in directory.")
+        
+    try:
+        st.image("product_render.png", caption="Hardware Design", use_container_width=True)
+    except Exception:
+        st.info("Place 'product_render.png' in directory.")
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("Explore positive, vibrant, and fully-labeled analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
