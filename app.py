@@ -50,6 +50,14 @@ st.markdown(f"""
         border: 1px solid #E2E8F0;
         text-align: center;
     }}
+
+    /* Align all metric cards to a uniform height */
+    [data-testid="stMetric"] {
+        height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
     
     /* Bubble Cards for Plotly Charts - Fixed Overflow and Scrollbars */
     [data-testid="stPlotlyChart"] {{
