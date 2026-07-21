@@ -1,0 +1,101 @@
+Order_ID,Customer_Persona,Geographic_Region,Local_AQI_At_Purchase,Acquisition_Channel,App_Engagement_Score
+AZ-0001,Commuter/Urbanite,New York,70,Instagram Ads,2
+AZ-0002,Allergy/Asthma Sufferer,San Francisco,228,Google Search,9
+AZ-0003,Frequent Traveler,New York,265,Travel Blogs,10
+AZ-0004,Frequent Traveler,New York,168,Airport Kiosks,8
+AZ-0005,Commuter/Urbanite,Los Angeles,291,TikTok,8
+AZ-0006,Commuter/Urbanite,Los Angeles,168,TikTok,8
+AZ-0007,Commuter/Urbanite,New York,210,Subway Posters,8
+AZ-0008,Allergy/Asthma Sufferer,Tokyo,81,Google Search,10
+AZ-0009,Frequent Traveler,New Delhi,136,Travel Blogs,1
+AZ-0010,Frequent Traveler,San Francisco,124,Airport Kiosks,3
+AZ-0011,Commuter/Urbanite,San Francisco,44,Instagram Ads,6
+AZ-0012,Allergy/Asthma Sufferer,Los Angeles,141,Google Search,10
+AZ-0013,Allergy/Asthma Sufferer,Tokyo,84,Medical Blogs,8
+AZ-0014,Commuter/Urbanite,Tokyo,199,TikTok,9
+AZ-0015,Commuter/Urbanite,Beijing,220,Instagram Ads,8
+AZ-0016,Commuter/Urbanite,New Delhi,242,Instagram Ads,7
+AZ-0017,Commuter/Urbanite,New York,31,TikTok,7
+AZ-0018,Frequent Traveler,Beijing,130,Airport Kiosks,1
+AZ-0019,Commuter/Urbanite,Beijing,238,TikTok,10
+AZ-0020,Commuter/Urbanite,Tokyo,73,Subway Posters,4
+AZ-0021,Frequent Traveler,Tokyo,212,Airport Kiosks,8
+AZ-0022,Commuter/Urbanite,Tokyo,101,Subway Posters,8
+AZ-0023,Commuter/Urbanite,New York,63,Instagram Ads,6
+AZ-0024,Commuter/Urbanite,New York,52,Instagram Ads,5
+AZ-0025,Frequent Traveler,Beijing,128,Travel Blogs,4
+AZ-0026,Allergy/Asthma Sufferer,Beijing,68,Google Search,8
+AZ-0027,Commuter/Urbanite,Los Angeles,94,Instagram Ads,1
+AZ-0028,Frequent Traveler,San Francisco,140,Travel Blogs,4
+AZ-0029,Frequent Traveler,San Francisco,142,Facebook Ads,7
+AZ-0030,Commuter/Urbanite,San Francisco,300,TikTok,9
+AZ-0031,Frequent Traveler,Los Angeles,30,Travel Blogs,5
+AZ-0032,Commuter/Urbanite,San Francisco,226,TikTok,7
+AZ-0033,Commuter/Urbanite,Tokyo,193,TikTok,9
+AZ-0034,Allergy/Asthma Sufferer,New York,69,Medical Blogs,9
+AZ-0035,Allergy/Asthma Sufferer,New York,162,Health Influencers,10
+AZ-0036,Allergy/Asthma Sufferer,San Francisco,40,Medical Blogs,9
+AZ-0037,Commuter/Urbanite,Beijing,225,TikTok,7
+AZ-0038,Commuter/Urbanite,New Delhi,98,Subway Posters,2
+AZ-0039,Frequent Traveler,Tokyo,46,Facebook Ads,5
+AZ-0040,Commuter/Urbanite,Los Angeles,241,Instagram Ads,8
+AZ-0041,Commuter/Urbanite,New Delhi,236,Instagram Ads,9
+AZ-0042,Frequent Traveler,New York,84,Travel Blogs,1
+AZ-0043,Commuter/Urbanite,San Francisco,99,Instagram Ads,2
+AZ-0044,Allergy/Asthma Sufferer,Los Angeles,55,Health Influencers,10
+AZ-0045,Commuter/Urbanite,Tokyo,203,TikTok,9
+AZ-0046,Frequent Traveler,New York,77,Facebook Ads,6
+AZ-0047,Commuter/Urbanite,San Francisco,233,Instagram Ads,10
+AZ-0048,Frequent Traveler,Tokyo,164,Travel Blogs,7
+AZ-0049,Frequent Traveler,Beijing,187,Travel Blogs,10
+AZ-0050,Commuter/Urbanite,New Delhi,242,TikTok,8
+AZ-0051,Allergy/Asthma Sufferer,New Delhi,157,Health Influencers,9
+AZ-0052,Allergy/Asthma Sufferer,New Delhi,282,Medical Blogs,7
+AZ-0053,Allergy/Asthma Sufferer,London,159,Google Search,10
+AZ-0054,Allergy/Asthma Sufferer,San Francisco,109,Health Influencers,7
+AZ-0055,Frequent Traveler,Tokyo,39,Facebook Ads,9
+AZ-0056,Allergy/Asthma Sufferer,New Delhi,172,Medical Blogs,8
+AZ-0057,Commuter/Urbanite,San Francisco,155,Subway Posters,9
+AZ-0058,Commuter/Urbanite,Beijing,286,TikTok,10
+AZ-0059,Commuter/Urbanite,New Delhi,90,Subway Posters,2
+AZ-0060,Commuter/Urbanite,Tokyo,222,Subway Posters,9
+AZ-0061,Commuter/Urbanite,San Francisco,54,Instagram Ads,10
+AZ-0062,Commuter/Urbanite,New Delhi,269,Instagram Ads,9
+AZ-0063,Allergy/Asthma Sufferer,Tokyo,209,Medical Blogs,7
+AZ-0064,Commuter/Urbanite,New York,287,Subway Posters,9
+AZ-0065,Commuter/Urbanite,Beijing,268,Subway Posters,9
+AZ-0066,Frequent Traveler,San Francisco,42,Airport Kiosks,7
+AZ-0067,Commuter/Urbanite,Tokyo,287,Instagram Ads,9
+AZ-0068,Allergy/Asthma Sufferer,Tokyo,128,Google Search,10
+AZ-0069,Commuter/Urbanite,London,149,Instagram Ads,5
+AZ-0070,Allergy/Asthma Sufferer,San Francisco,136,Medical Blogs,8
+AZ-0071,Allergy/Asthma Sufferer,New York,172,Google Search,8
+AZ-0072,Commuter/Urbanite,San Francisco,120,Instagram Ads,7
+AZ-0073,Commuter/Urbanite,Beijing,241,TikTok,10
+AZ-0074,Allergy/Asthma Sufferer,London,267,Google Search,8
+AZ-0075,Frequent Traveler,San Francisco,31,Facebook Ads,10
+AZ-0076,Frequent Traveler,San Francisco,60,Facebook Ads,10
+AZ-0077,Allergy/Asthma Sufferer,New Delhi,225,Google Search,9
+AZ-0078,Commuter/Urbanite,Tokyo,203,TikTok,10
+AZ-0079,Commuter/Urbanite,Beijing,51,Instagram Ads,9
+AZ-0080,Commuter/Urbanite,New York,200,Instagram Ads,7
+AZ-0081,Allergy/Asthma Sufferer,London,217,Health Influencers,9
+AZ-0082,Frequent Traveler,Tokyo,279,Facebook Ads,9
+AZ-0083,Commuter/Urbanite,Los Angeles,92,Instagram Ads,4
+AZ-0084,Commuter/Urbanite,Beijing,176,TikTok,10
+AZ-0085,Commuter/Urbanite,London,115,Instagram Ads,10
+AZ-0086,Commuter/Urbanite,New York,239,Subway Posters,9
+AZ-0087,Frequent Traveler,London,181,Facebook Ads,10
+AZ-0088,Frequent Traveler,London,250,Facebook Ads,10
+AZ-0089,Allergy/Asthma Sufferer,London,236,Health Influencers,10
+AZ-0090,Frequent Traveler,New Delhi,231,Travel Blogs,8
+AZ-0091,Commuter/Urbanite,Los Angeles,148,Instagram Ads,9
+AZ-0092,Frequent Traveler,New York,118,Airport Kiosks,8
+AZ-0093,Allergy/Asthma Sufferer,New York,161,Google Search,8
+AZ-0094,Frequent Traveler,New York,246,Travel Blogs,7
+AZ-0095,Allergy/Asthma Sufferer,Tokyo,253,Health Influencers,9
+AZ-0096,Frequent Traveler,Beijing,121,Travel Blogs,9
+AZ-0097,Frequent Traveler,New York,250,Airport Kiosks,9
+AZ-0098,Commuter/Urbanite,Beijing,181,TikTok,7
+AZ-0099,Commuter/Urbanite,New York,56,Instagram Ads,4
+AZ-0100,Commuter/Urbanite,Los Angeles,181,TikTok,9
