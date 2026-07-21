@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import datetime
 
 # ------------------------------------------------------------------------------
 # 1. Page Configuration & Delightful Bright Pastel Design System
@@ -11,7 +12,30 @@ st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️",
 
 BG_COLOR = "#F4F8F7"
 PRIMARY_COLOR = "#1E293B"
-PASTEL_COLORS = ['#38BDF8', '#34D399', '#FBBF24', '#F43F5E', '#A78BFA', '#FB7185', '#2DD4BF', '#60A5FA', '#34D399']
+
+# Extracted from your design for uniformity
+REGION_COLOR_MAP = {
+    'New York': '#38BDF8', 
+    'San Francisco': '#F43F5E',  
+    'Tokyo': '#14B8A6', 
+    'Beijing': '#A78BFA', 
+    'New Delhi': '#FB7185', 
+    'Los Angeles': '#FBBF24', 
+    'London': '#00FFFF'
+}
+
+# NEW: Fresh, highly distinguishable bright pastel palette for the acquisition graph
+CHANNEL_COLOR_MAP = {
+    'Instagram Ads': '#FFB5E8',      # Pastel Pink
+    'TikTok': '#85E3FF',             # Pastel Cyan
+    'Travel Blogs': '#FFF5BA',       # Pastel Yellow
+    'Subway Posters': '#B28DFF',     # Pastel Purple
+    'Google Search': '#AFF8D8',      # Pastel Mint
+    'Facebook Ads': '#FFC9DE',       # Rose Water
+    'Health Influencers': '#6EB5FF', # Baby Blue
+    'Medical Blogs': '#FFCCF9',      # Lilac
+    'Airport Kiosks': '#F6A6FF'      # Bright Lavender
+}
 
 st.markdown(f"""
     <style>
@@ -46,12 +70,18 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------
-# 2. Data Loading
+# 2. Data Loading & Date Processing
 # ------------------------------------------------------------------------------
 @st.cache_data
 def load_data():
     df_fin = pd.read_csv("financial_projections.csv")
     df_demo = pd.read_csv("customer_demographics.csv")
+    
+    # NEW: Convert Month (1-36) into actual Dates for the Date/Month/Year filter
+    # Assuming the projection starts on Jan 1, 2024
+    df_fin['Date'] = pd.date_range(start='2024-01-01', periods=len(df_fin), freq='MS')
+    df_fin['Date_Label'] = df_fin['Date'].dt.strftime('%b %Y')
+    
     return df_fin, df_demo
 
 try:
@@ -68,9 +98,17 @@ st.sidebar.title("AeroZone Controls")
 st.sidebar.markdown("Dynamic filtering engine for granular market and regional due diligence.")
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📅 Financial Timeframe Filter")
-min_month, max_month = int(df_fin['Month'].min()), int(df_fin['Month'].max())
-selected_months = st.sidebar.slider("Select Month Range (Projections)", min_month, max_month, (min_month, max_month))
+st.sidebar.subheader("📅 Financial Timeline (Date/Month/Year)")
+# NEW: Slider using actual Datetime objects
+min_date = df_fin['Date'].min().to_pydatetime()
+max_date = df_fin['Date'].max().to_pydatetime()
+selected_dates = st.sidebar.slider(
+    "Select Projection Date Range", 
+    min_value=min_date, 
+    max_value=max_date, 
+    value=(min_date, max_date),
+    format="MMM YYYY"
+)
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("🌍 Regional & Persona Filters")
@@ -81,7 +119,8 @@ st.sidebar.subheader("📈 Environmental Filter")
 min_aqi, max_aqi = int(df_demo['Local_AQI_At_Purchase'].min()), int(df_demo['Local_AQI_At_Purchase'].max())
 selected_aqi = st.sidebar.slider("Purchase Air Quality Index (AQI)", min_aqi, max_aqi, (min_aqi, max_aqi))
 
-filtered_fin = df_fin[(df_fin['Month'] >= selected_months[0]) & (df_fin['Month'] <= selected_months[1])]
+# Apply Filters
+filtered_fin = df_fin[(df_fin['Date'] >= pd.to_datetime(selected_dates[0])) & (df_fin['Date'] <= pd.to_datetime(selected_dates[1]))]
 
 filtered_demo = df_demo[
     (df_demo['Geographic_Region'].isin(selected_regions)) &
@@ -91,9 +130,15 @@ filtered_demo = df_demo[
 ]
 
 # ------------------------------------------------------------------------------
-# 4. Hero KPIs (Top Row)
+# 4. Hero Intro & KPIs (Top Row)
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
+
+# NEW: Brief Product Intro
+st.markdown("""
+**About AeroZone:** AeroZone is a next-generation wearable personal air purifier collar engineered for urban commuters, frequent travelers, and asthma sufferers. By actively filtering PM2.5, VOCs, and allergens from the user's immediate breathing zone, it offers real-time health protection. Paired with our proprietary SaaS mobile app, users receive personalized respiratory health insights, live environmental pollution alerts, and automated filter-replacement subscriptions.
+""")
+
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 st.markdown("Explore positive, vibrant, and fully-labeled analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
 
@@ -113,16 +158,16 @@ st.subheader("📊 1. Financial Trajectory & Scalability Engine")
 c1, c2 = st.columns(2)
 
 with c1:
-    # Revenue Chart with Local Month Filter applied
     fig_rev = go.Figure()
-    fig_rev.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
+    # Updated to use 'Date' instead of 'Month'
+    fig_rev.add_trace(go.Scatter(x=filtered_fin['Date'], y=filtered_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
                                   name='SaaS ARR Base', line=dict(color="#34D399", width=2)))
-    fig_rev.add_trace(go.Bar(x=filtered_fin['Month'], y=filtered_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color="#38BDF8", opacity=0.85, text=filtered_fin['Hardware_Revenue'], texttemplate='$%{text:,.0s}', textposition='auto'))
-    fig_rev.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['Total_Gross_Revenue'], mode='lines+markers', 
+    fig_rev.add_trace(go.Bar(x=filtered_fin['Date'], y=filtered_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color="#38BDF8", opacity=0.85, text=filtered_fin['Hardware_Revenue'], texttemplate='$%{text:,.0s}', textposition='auto'))
+    fig_rev.add_trace(go.Scatter(x=filtered_fin['Date'], y=filtered_fin['Total_Gross_Revenue'], mode='lines+markers', 
                                   name='Total Revenue', line=dict(color="#F43F5E", width=3)))
     fig_rev.update_layout(
         title="Revenue Composition & Growth (Filtered Timeline)", 
-        xaxis_title="Projection Month (1 to 36)", 
+        xaxis_title="Timeline (Date/Month/Year)", 
         yaxis_title="Revenue ($ USD)", 
         template="plotly_white", 
         hovermode="x unified", 
@@ -131,13 +176,13 @@ with c1:
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
-    # Unit Volume Scale with Local Month Filter applied & Values on Bars
+    # Updated to use 'Date' instead of 'Month'
     fig_unit = make_subplots(specs=[[{"secondary_y": True}]])
-    fig_unit.add_trace(go.Bar(x=filtered_fin['Month'], y=filtered_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA", text=filtered_fin['Hardware_Units_Sold'], texttemplate='%{text:,}', textposition='auto'), secondary_y=False)
-    fig_unit.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#FBBF24", width=3)), secondary_y=True)
+    fig_unit.add_trace(go.Bar(x=filtered_fin['Date'], y=filtered_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA", text=filtered_fin['Hardware_Units_Sold'], texttemplate='%{text:,}', textposition='auto'), secondary_y=False)
+    fig_unit.add_trace(go.Scatter(x=filtered_fin['Date'], y=filtered_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#FBBF24", width=3)), secondary_y=True)
     fig_unit.update_layout(
         title="Unit Volume Scale vs. Falling CAC (Filtered Timeline)", 
-        xaxis_title="Month", 
+        xaxis_title="Timeline (Date/Month/Year)", 
         template="plotly_white", 
         hovermode="x unified", 
         height=400
@@ -146,13 +191,12 @@ with c2:
     fig_unit.update_yaxes(title_text="Customer Acquisition Cost ($)", secondary_y=True)
     st.plotly_chart(fig_unit, use_container_width=True)
 
-# Marketing spend vs revenue
 fig_mkt = go.Figure()
-fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color="#FB7185", width=2)))
-fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color="#34D399", width=2, dash='dot')))
+fig_mkt.add_trace(go.Scatter(x=df_fin['Date'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color="#FB7185", width=2)))
+fig_mkt.add_trace(go.Scatter(x=df_fin['Date'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color="#34D399", width=2, dash='dot')))
 fig_mkt.update_layout(
     title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", 
-    xaxis_title="Month", 
+    xaxis_title="Timeline", 
     yaxis_title="Amount ($ USD)", 
     template="plotly_white", 
     height=320, 
@@ -160,11 +204,10 @@ fig_mkt.update_layout(
 )
 st.plotly_chart(fig_mkt, use_container_width=True)
 
-# Gross Margin Expansion without point values (lines + markers only)
-fig_margin = px.line(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS")
+fig_margin = px.line(df_fin, x='Date', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS")
 fig_margin.update_traces(mode="lines+markers", line=dict(color="#34D399", width=3), marker=dict(size=6, color="#0EA5E9"))
 fig_margin.update_layout(
-    xaxis_title="Month (1 to 36)", 
+    xaxis_title="Timeline", 
     yaxis_title="Gross Margin Percentage (%)", 
     template="plotly_white", 
     height=350
@@ -222,7 +265,8 @@ with in_c3:
     fig_stack = px.bar(
         chan_persona, x='Acquisition_Channel', y='Count', color='Customer_Persona',
         title="Acquisition Channel Efficiency across Personas",
-        color_discrete_sequence=['#38BDF8', '#34D399', '#A78BFA'],
+        # NEW: Vibrant distinct palette for the stacked acquisition graph
+        color_discrete_sequence=['#FF9CEE', '#85E3FF', '#FFF5BA'],
         text='Count'
     )
     fig_stack.update_traces(texttemplate='%{text}', textposition='auto')
@@ -238,23 +282,13 @@ with in_c3:
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
-    # Custom color map with specific color for San Francisco and percentage-only labels (using color_discrete_map)
-    color_map = {
-        'New York': '#38BDF8', 
-        'San Francisco': '#F43F5E',  
-        'Tokyo': '#14B8A6', 
-        'Beijing': '#A78BFA', 
-        'New Delhi': '#FB7185', 
-        'Los Angeles': '#FBBF24', 
-        'London': '#00FFFF'
-    }
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
         color='Geographic_Region',
-        color_discrete_map=color_map
+        color_discrete_map=REGION_COLOR_MAP
     )
-    fig_reg_dist.update_traces(textposition='inside', textinfo='percent') # Percentage only
+    fig_reg_dist.update_traces(textposition='inside', textinfo='percent')
     fig_reg_dist.update_layout(template="plotly_white", height=380)
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
@@ -292,24 +326,11 @@ with d2:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
         
-        # Explicit unrepeated custom color mapping for all channels
-        channel_color_map = {
-            'Instagram Ads': '#38BDF8',
-            'TikTok': '#34D399',
-            'Travel Blogs': '#FBBF24',
-            'Subway Posters': '#A78BFA',
-            'Google Search': '#2DD4BF',
-            'Facebook Ads': '#FB7185',
-            'Health Influencers': '#00FFFF',  # Distinct color
-            'Medical Blogs': '#FF69B4',       # Distinct color
-            'Airport Kiosks': '#8B4513'       # Distinct color
-        }
-        
         fig_chan = px.bar(
             chan_df, x='Count', y='Channel', orientation='h', 
             title="Top Acquisition Channels (Filtered)", 
             color='Channel',
-            color_discrete_map=channel_color_map,
+            color_discrete_map=CHANNEL_COLOR_MAP,
             text='Count'
         )
         fig_chan.update_traces(texttemplate='%{text}', textposition='auto')
@@ -344,7 +365,90 @@ if not filtered_demo.empty:
 st.markdown("---")
 
 # ------------------------------------------------------------------------------
-# 8. Executive Pitch Conclusion & Investment Summary
+# 8. Section 4: Advanced Investor Analytics (Deep-Dive)
+# ------------------------------------------------------------------------------
+st.subheader("🚀 4. Advanced Investor Analytics (Deep-Dive)")
+
+a1, a2 = st.columns(2)
+
+with a1:
+    # Cohort Retention & Subscription Churn Curve (Filtered by Date)
+    if not filtered_fin.empty:
+        fig_churn = make_subplots(specs=[[{"secondary_y": True}]])
+        fig_churn.add_trace(go.Scatter(x=filtered_fin['Date'], y=filtered_fin['Active_Subscribers'], name="Active Subs", mode='lines+markers', line=dict(color="#38BDF8", width=3)), secondary_y=False)
+        fig_churn.add_trace(go.Scatter(x=filtered_fin['Date'], y=filtered_fin['Churn_Rate'], name="Churn Rate", mode='lines', line=dict(color="#F43F5E", width=2, dash='dot')), secondary_y=True)
+        fig_churn.update_layout(
+            title="Subscriber Retention & Churn Velocity", 
+            xaxis_title="Timeline", 
+            template="plotly_white", 
+            hovermode="x unified",
+            height=400
+        )
+        fig_churn.update_yaxes(title_text="Active Subscribers", secondary_y=False)
+        fig_churn.update_yaxes(title_text="Churn Rate (%)", tickformat='.1%', secondary_y=True)
+        st.plotly_chart(fig_churn, use_container_width=True)
+
+with a2:
+    # Seasonal Seasonality Heatmap
+    if not filtered_fin.empty:
+        df_fin_heat = filtered_fin.copy()
+        df_fin_heat['Year'] = df_fin_heat['Date'].dt.year
+        df_fin_heat['Cal_Month'] = df_fin_heat['Date'].dt.month
+        month_names = {1:'Jan', 2:'Feb', 3:'Mar', 4:'Apr', 5:'May', 6:'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec'}
+        df_fin_heat['Month_Name'] = df_fin_heat['Cal_Month'].map(month_names)
+        
+        pivot_heat = pd.pivot_table(df_fin_heat, values='Hardware_Units_Sold', index='Year', columns='Month_Name', aggfunc='sum')
+        ordered_months = [month_names[i] for i in range(1, 13) if month_names[i] in pivot_heat.columns]
+        pivot_heat = pivot_heat.reindex(columns=ordered_months)
+        
+        fig_heat = px.imshow(pivot_heat, text_auto=True, 
+                             color_continuous_scale=['#F4F8F7', '#38BDF8', '#F43F5E'], 
+                             title="Seasonality Heatmap: Hardware Units Sold")
+        fig_heat.update_layout(template="plotly_white", xaxis_title="Calendar Month", yaxis_title="Operational Year", height=400)
+        st.plotly_chart(fig_heat, use_container_width=True)
+
+a3, a4 = st.columns(2)
+
+with a3:
+    # Global Bubble Map
+    if not filtered_demo.empty:
+        city_coords = {
+            'Los Angeles': {'lat': 34.0522, 'lon': -118.2437}, 
+            'New York': {'lat': 40.7128, 'lon': -74.0060},
+            'London': {'lat': 51.5074, 'lon': -0.1278}, 
+            'Tokyo': {'lat': 35.6762, 'lon': 139.6503},
+            'New Delhi': {'lat': 28.6139, 'lon': 77.2090}, 
+            'Beijing': {'lat': 39.9042, 'lon': 116.4074},
+            'San Francisco': {'lat': 37.7749, 'lon': -122.4194}
+        }
+        map_df = filtered_demo['Geographic_Region'].value_counts().reset_index()
+        map_df.columns = ['Geographic_Region', 'Order_Count']
+        map_df['lat'] = map_df['Geographic_Region'].apply(lambda x: city_coords.get(x, {}).get('lat', 0))
+        map_df['lon'] = map_df['Geographic_Region'].apply(lambda x: city_coords.get(x, {}).get('lon', 0))
+        
+        fig_map = px.scatter_geo(map_df, lat='lat', lon='lon', size='Order_Count', 
+                                 color='Geographic_Region', hover_name='Geographic_Region',
+                                 title="Global Demand Distribution (Geographic Map)",
+                                 color_discrete_map=REGION_COLOR_MAP,
+                                 projection="natural earth")
+        fig_map.update_traces(marker=dict(line=dict(width=1, color='DarkSlateGrey')))
+        fig_map.update_layout(template="plotly_white", height=400, geo=dict(showland=True, landcolor="#F4F8F7", showcountries=True, countrycolor="#E2E8F0"))
+        st.plotly_chart(fig_map, use_container_width=True)
+
+with a4:
+    # Acquisition Channel Conversion Efficiency Matrix (Box Plot)
+    if not filtered_demo.empty:
+        fig_eff = px.box(filtered_demo, x='Acquisition_Channel', y='App_Engagement_Score', 
+                         color='Acquisition_Channel', 
+                         title="Channel Conversion Efficiency (Engagement Spread)", 
+                         color_discrete_map=CHANNEL_COLOR_MAP)
+        fig_eff.update_layout(template="plotly_white", xaxis_title="Acquisition Channel", yaxis_title="App Engagement Score", height=400, showlegend=False)
+        st.plotly_chart(fig_eff, use_container_width=True)
+
+st.markdown("---")
+
+# ------------------------------------------------------------------------------
+# 9. Executive Pitch Conclusion & Investment Summary
 # ------------------------------------------------------------------------------
 st.markdown("""
     <div class="summary-box">
@@ -365,11 +469,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------
-# 9. Interactive Data Table Inspector
+# 10. Interactive Data Table Inspector
 # ------------------------------------------------------------------------------
 with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
     tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
     with tab1:
-        st.dataframe(filtered_fin, use_container_width=True)
+        # Display the formatted date column for investors to easily read
+        display_fin = filtered_fin.copy()
+        display_fin['Date'] = display_fin['Date'].dt.strftime('%Y-%m-%d')
+        st.dataframe(display_fin, use_container_width=True)
     with tab2:
         st.dataframe(filtered_demo, use_container_width=True)
