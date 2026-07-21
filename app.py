@@ -9,7 +9,6 @@ from plotly.subplots import make_subplots
 # ------------------------------------------------------------------------------
 st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️", layout="wide")
 
-# Delightful, Bright, and Positive Pastel Color Palette
 BG_COLOR = "#F4F8F7"
 PRIMARY_COLOR = "#1E293B"
 PASTEL_COLORS = ['#38BDF8', '#34D399', '#FBBF24', '#F43F5E', '#A78BFA', '#FB7185', '#2DD4BF', '#60A5FA']
@@ -19,7 +18,6 @@ st.markdown(f"""
     .stApp {{ background-color: {BG_COLOR}; }}
     h1, h2, h3, h4 {{ color: {PRIMARY_COLOR}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; }}
     
-    /* Executive Summary Callout Box */
     .summary-box {{
         background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 100%);
         color: #FFFFFF !important;
@@ -34,7 +32,6 @@ st.markdown(f"""
         color: #FFFFFF !important;
     }}
     
-    /* Insight Cards */
     .insight-card {{
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -71,6 +68,11 @@ st.sidebar.title("AeroZone Controls")
 st.sidebar.markdown("Dynamic filtering engine for granular market and regional due diligence.")
 
 st.sidebar.markdown("---")
+st.sidebar.subheader("📅 Financial Timeframe Filter")
+min_month, max_month = int(df_fin['Month'].min()), int(df_fin['Month'].max())
+selected_months = st.sidebar.slider("Select Month Range (Projections)", min_month, max_month, (min_month, max_month))
+
+st.sidebar.markdown("---")
 st.sidebar.subheader("🌍 Regional & Persona Filters")
 selected_regions = st.sidebar.multiselect("Geographic Market", df_demo['Geographic_Region'].unique(), default=df_demo['Geographic_Region'].unique())
 selected_personas = st.sidebar.multiselect("Target Persona", df_demo['Customer_Persona'].unique(), default=df_demo['Customer_Persona'].unique())
@@ -78,6 +80,8 @@ selected_personas = st.sidebar.multiselect("Target Persona", df_demo['Customer_P
 st.sidebar.subheader("📈 Environmental Filter")
 min_aqi, max_aqi = int(df_demo['Local_AQI_At_Purchase'].min()), int(df_demo['Local_AQI_At_Purchase'].max())
 selected_aqi = st.sidebar.slider("Purchase Air Quality Index (AQI)", min_aqi, max_aqi, (min_aqi, max_aqi))
+
+filtered_fin = df_fin[(df_fin['Month'] >= selected_months[0]) & (df_fin['Month'] <= selected_months[1])]
 
 filtered_demo = df_demo[
     (df_demo['Geographic_Region'].isin(selected_regions)) &
@@ -91,7 +95,7 @@ filtered_demo = df_demo[
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
-st.markdown("Explore positive, vibrant, and interactive analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
+st.markdown("Explore positive, vibrant, and fully-labeled analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("M36 Annual Recurring Revenue", f"${(df_fin['Subscription_Revenue'].iloc[-1] * 12):,.0f}", "+185% YoY")
@@ -109,36 +113,68 @@ st.subheader("📊 1. Financial Trajectory & Scalability Engine")
 c1, c2 = st.columns(2)
 
 with c1:
+    # Chart 1: 36-Month Revenue with Local Month/Date Filter applied & Axis Labels
     fig_rev = go.Figure()
-    fig_rev.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
+    fig_rev.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
                                   name='SaaS ARR Base', line=dict(color="#34D399", width=2)))
-    fig_rev.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color="#38BDF8", opacity=0.85))
-    fig_rev.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines+markers', 
+    fig_rev.add_trace(go.Bar(x=filtered_fin['Month'], y=filtered_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color="#38BDF8", opacity=0.85, text=filtered_fin['Hardware_Revenue'], texttemplate='$%{text:,.0s}', textposition='auto'))
+    fig_rev.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['Total_Gross_Revenue'], mode='lines+markers', 
                                   name='Total Revenue', line=dict(color="#F43F5E", width=3)))
-    fig_rev.update_layout(title="36-Month Revenue Composition & Growth", template="plotly_white", hovermode="x unified", height=400)
+    fig_rev.update_layout(
+        title="Revenue Composition & Growth (Filtered Timeline)", 
+        xaxis_title="Projection Month (1 to 36)", 
+        yaxis_title="Revenue ($ USD)", 
+        template="plotly_white", 
+        hovermode="x unified", 
+        height=400
+    )
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
+    # Chart 2: Unit Economics with Values on Bars & Axis Labels
     fig_unit = make_subplots(specs=[[{"secondary_y": True}]])
-    fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA"), secondary_y=False)
+    fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA", text=df_fin['Hardware_Units_Sold'], texttemplate='%{text:,}', textposition='auto'), secondary_y=False)
     fig_unit.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#FBBF24", width=3)), secondary_y=True)
-    fig_unit.update_layout(title="Unit Volume Scale vs. Falling CAC", template="plotly_white", hovermode="x unified", height=400)
+    fig_unit.update_layout(
+        title="Unit Volume Scale vs. Falling CAC", 
+        xaxis_title="Month", 
+        template="plotly_white", 
+        hovermode="x unified", 
+        height=400
+    )
+    fig_unit.update_yaxes(title_text="Hardware Units Sold", secondary_y=False)
+    fig_unit.update_yaxes(title_text="Customer Acquisition Cost ($)", secondary_y=True)
     st.plotly_chart(fig_unit, use_container_width=True)
 
+# Marketing spend vs revenue
 fig_mkt = go.Figure()
 fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color="#FB7185", width=2)))
 fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color="#34D399", width=2, dash='dot')))
-fig_mkt.update_layout(title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", template="plotly_white", height=320, hovermode="x unified")
+fig_mkt.update_layout(
+    title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", 
+    xaxis_title="Month", 
+    yaxis_title="Amount ($ USD)", 
+    template="plotly_white", 
+    height=320, 
+    hovermode="x unified"
+)
 st.plotly_chart(fig_mkt, use_container_width=True)
 
-fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS ($55/$45)", color_discrete_sequence=["#34D399"])
-fig_margin.update_layout(template="plotly_white", height=300)
+# Chart 3: Gross Margin Expansion with Labeled Data Points & Axis Labels
+fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS", text='Gross_Margin_%')
+fig_margin.update_traces(mode="lines+markers+text", textposition="top center", texttemplate="%{text:.1f}%")
+fig_margin.update_layout(
+    xaxis_title="Month (1 to 36)", 
+    yaxis_title="Gross Margin Percentage (%)", 
+    template="plotly_white", 
+    height=350
+)
 st.plotly_chart(fig_margin, use_container_width=True)
 
 st.markdown("---")
 
 # ------------------------------------------------------------------------------
-# 6. Section 2: Deep Product & Customer Insights (Multicolor Pie & Bar Charts)
+# 6. Section 2: Deep Product & Customer Insights
 # ------------------------------------------------------------------------------
 st.subheader("🔬 2. Deep Customer & Product Insights")
 
@@ -146,14 +182,21 @@ in_c1, in_c2 = st.columns(2)
 
 with in_c1:
     persona_eng = df_demo.groupby('Customer_Persona')['App_Engagement_Score'].mean().reset_index()
-    # Explicit multicolored pastel bars
     fig_eng = px.bar(
         persona_eng, x='Customer_Persona', y='App_Engagement_Score', 
         title="Sticky Ecosystem: Avg. App Engagement Score by Persona",
         color='Customer_Persona', 
-        color_discrete_sequence=['#38BDF8', '#34D399', '#FBBF24']
+        color_discrete_sequence=['#38BDF8', '#34D399', '#FBBF24'],
+        text='App_Engagement_Score'
     )
-    fig_eng.update_layout(template="plotly_white", height=380, showlegend=False)
+    fig_eng.update_traces(texttemplate='%{text:.2f}', textposition='auto')
+    fig_eng.update_layout(
+        xaxis_title="Customer Persona", 
+        yaxis_title="Avg App Engagement Score (1-10)", 
+        template="plotly_white", 
+        height=380, 
+        showlegend=False
+    )
     st.plotly_chart(fig_eng, use_container_width=True)
 
 with in_c2:
@@ -163,7 +206,13 @@ with in_c2:
         color='Customer_Persona', 
         color_discrete_sequence=['#38BDF8', '#34D399', '#FBBF24']
     )
-    fig_box.update_layout(template="plotly_white", height=380, showlegend=False)
+    fig_box.update_layout(
+        xaxis_title="Customer Persona", 
+        yaxis_title="Local AQI at Purchase", 
+        template="plotly_white", 
+        height=380, 
+        showlegend=False
+    )
     st.plotly_chart(fig_box, use_container_width=True)
 
 in_c3, in_c4 = st.columns(2)
@@ -173,21 +222,29 @@ with in_c3:
     fig_stack = px.bar(
         chan_persona, x='Acquisition_Channel', y='Count', color='Customer_Persona',
         title="Acquisition Channel Efficiency across Personas",
-        color_discrete_sequence=['#38BDF8', '#34D399', '#A78BFA']
+        color_discrete_sequence=['#38BDF8', '#34D399', '#A78BFA'],
+        text='Count'
     )
-    fig_stack.update_layout(template="plotly_white", height=380, xaxis={'categoryorder':'total descending'})
+    fig_stack.update_traces(texttemplate='%{text}', textposition='auto')
+    fig_stack.update_layout(
+        xaxis_title="Acquisition Channel", 
+        yaxis_title="Order Count", 
+        template="plotly_white", 
+        height=380, 
+        xaxis={'categoryorder':'total descending'}
+    )
     st.plotly_chart(fig_stack, use_container_width=True)
 
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
-    # Explicit multicolored pie chart slices
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
         color='Geographic_Region',
         color_discrete_sequence=PASTEL_COLORS
     )
+    fig_reg_dist.update_traces(textposition='inside', textinfo='percent+label')
     fig_reg_dist.update_layout(template="plotly_white", height=380)
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
@@ -224,14 +281,22 @@ with d2:
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
-        # Explicitly multi-colored individual horizontal bars
         fig_chan = px.bar(
             chan_df, x='Count', y='Channel', orientation='h', 
             title="Top Acquisition Channels (Filtered)", 
             color='Channel',
-            color_discrete_sequence=PASTEL_COLORS
+            color_discrete_sequence=PASTEL_COLORS,
+            text='Count'
         )
-        fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, showlegend=False)
+        fig_chan.update_traces(texttemplate='%{text}', textposition='auto')
+        fig_chan.update_layout(
+            xaxis_title="Order Count", 
+            yaxis_title="Acquisition Channel", 
+            template="plotly_white", 
+            height=450, 
+            yaxis={'categoryorder':'total ascending'}, 
+            showlegend=False
+        )
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
         st.warning("No data available for channels.")
@@ -244,7 +309,12 @@ if not filtered_demo.empty:
         color_discrete_sequence=['#F43F5E', '#34D399', '#38BDF8']
     )
     fig_aqi.add_vrect(x0=150, x1=300, fillcolor="#F43F5E", opacity=0.07, line_width=0, annotation_text="Severe Pollution Spike Zone", annotation_position="top left")
-    fig_aqi.update_layout(template="plotly_white", height=450)
+    fig_aqi.update_layout(
+        xaxis_title="Local Air Quality Index (AQI at Purchase)", 
+        yaxis_title="App Engagement Score (1-10)", 
+        template="plotly_white", 
+        height=450
+    )
     st.plotly_chart(fig_aqi, use_container_width=True)
 
 st.markdown("---")
@@ -276,6 +346,6 @@ st.markdown("""
 with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
     tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
     with tab1:
-        st.dataframe(df_fin, use_container_width=True)
+        st.dataframe(filtered_fin, use_container_width=True)
     with tab2:
         st.dataframe(filtered_demo, use_container_width=True)
