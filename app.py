@@ -133,7 +133,7 @@ st.sidebar.title("AeroZone Controls")
 st.sidebar.markdown("Dynamic filtering engine for granular market and regional due diligence.")
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📅 Financial Timeline (Date/Month/Year)")
+st.sidebar.subheader("📅 Financial Timeline")
 min_date = df_fin['Date'].min().to_pydatetime()
 max_date = df_fin['Date'].max().to_pydatetime()
 selected_dates = st.sidebar.slider(
