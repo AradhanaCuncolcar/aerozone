@@ -128,7 +128,7 @@ except FileNotFoundError:
 # ------------------------------------------------------------------------------
 # 3. Global & Local Interactive Filters
 # ------------------------------------------------------------------------------
-st.sidebar.image("https://cdn-icons-png.magnific.com/256/18122/18122832.png?semt=ais_white_label.png", width=65)
+st.sidebar.image("https://cdn-icons-png.magnific.com/256/18122/18122832.png?semt=ais_white_label.png", width=85, output_format="auto")
 st.sidebar.title("AeroZone Controls")
 st.sidebar.markdown("Dynamic filtering engine for granular market and regional due diligence.")
 
