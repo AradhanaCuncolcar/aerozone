@@ -21,16 +21,19 @@ st.markdown(f"""
     .stApp {{ background-color: {COLOR_BG}; }}
     h1, h2, h3, h4 {{ color: {COLOR_PRIMARY}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; }}
     
-    /* Executive Summary Callout Box */
+    /* Executive Summary Callout Box - Fixed dark background with high-contrast bright text */
     .summary-box {{
-        background: linear-gradient(135deg, #0F172A 1E%, #1E293B 100%);
-        color: #F8FAFC;
-        padding: 30px;
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        color: #FFFFFF !important;
+        padding: 35px;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
         margin-top: 25px;
         margin-bottom: 25px;
         border-left: 6px solid {COLOR_SECONDARY};
+    }}
+    .summary-box h2, .summary-box p, .summary-box li, .summary-box b {{
+        color: #FFFFFF !important;
     }}
     
     /* Insight Cards */
@@ -42,6 +45,7 @@ st.markdown(f"""
         border-radius: 8px;
         margin-bottom: 15px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        color: {COLOR_PRIMARY};
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -104,7 +108,6 @@ st.markdown("---")
 # 5. Section 1: Financial Trajectory & Scalability Engine
 # ------------------------------------------------------------------------------
 st.subheader("📊 1. Financial Trajectory & Scalability Engine")
-st.markdown("Consistent color scheme matching corporate dark navy and teal design language.")
 
 c1, c2 = st.columns(2)
 
@@ -141,7 +144,6 @@ st.markdown("---")
 # 6. Section 2: Deep Product & Customer Insights
 # ------------------------------------------------------------------------------
 st.subheader("🔬 2. Deep Customer & Product Insights")
-st.markdown("Granular evaluation of persona behavior, ecosystem stickiness, and geographic distribution.")
 
 in_c1, in_c2 = st.columns(2)
 
@@ -179,10 +181,12 @@ with in_c3:
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
+    # UPGRADED: Using a distinct discrete qualitative color sequence so every slice has a unique, vibrant color
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
-        color_discrete_sequence=px.colors.sequential.Blues_r
+        color='Geographic_Region',
+        color_discrete_sequence=['#0F172A', '#0EA5E9', '#14B8A6', '#6366F1', '#F43F5E', '#F59E0B', '#10B981']
     )
     fig_reg_dist.update_layout(template="plotly_white", height=380, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_reg_dist, use_container_width=True)
@@ -220,8 +224,13 @@ with d2:
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
-        fig_chan = px.bar(chan_df, x='Count', y='Channel', orientation='h', title="Top Acquisition Channels (Filtered)", color_discrete_sequence=[COLOR_PRIMARY])
-        fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY))
+        fig_chan = px.bar(
+            chan_df, x='Count', y='Channel', orientation='h', 
+            title="Top Acquisition Channels (Filtered)", 
+            color='Count',
+            color_continuous_scale='Teal'
+        )
+        fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY), coloraxis_showscale=False)
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
         st.warning("No data available for channels.")
@@ -244,17 +253,17 @@ st.markdown("---")
 # ------------------------------------------------------------------------------
 st.markdown("""
     <div class="summary-box">
-        <h2 style="color: white; margin-top: 0;">🚀 Executive Summary: Why Invest in AeroZone?</h2>
-        <p style="font-size: 16px; line-height: 1.6;">
+        <h2 style="color: #FFFFFF; margin-top: 0;">🚀 Executive Summary: Why Invest in AeroZone?</h2>
+        <p style="font-size: 16px; line-height: 1.6; color: #FFFFFF;">
             AeroZone is uniquely positioned at the intersection of wearable consumer hardware and high-margin recurring SaaS healthcare. 
             By addressing global urban decay, recurring wildfire seasons, and chronic respiratory vulnerabilities, our personal air purifier collar unlocks three critical investor pillars:
         </p>
-        <ul style="font-size: 15px; line-height: 1.6;">
-            <li><b>Defensible Hardware-SaaS Hybrid Model:</b> Initial hardware margins expand significantly as manufacturing scales down from $65 to $45 COGS, while monthly subscriptions build a predictable, high-retention ARR base.</li>
-            <li><b>Organic Environmental Catalysts:</b> Seasonal wildfire spikes (Aug/Sep) and winter smog drive massive, organic customer acquisition spikes with zero proportional marketing cost inflations.</li>
-            <li><b>Proven Product-Market Fit & Engagement:</b> Data demonstrates a direct correlation between worsening AQI and user app engagement, proving sticky long-term ecosystem retention among allergy and urban commuter personas.</li>
+        <ul style="font-size: 15px; line-height: 1.6; color: #FFFFFF;">
+            <li><b style="color: #38BDF8;">Defensible Hardware-SaaS Hybrid Model:</b> Initial hardware margins expand significantly as manufacturing scales down from $65 to $45 COGS, while monthly subscriptions build a predictable, high-retention ARR base.</li>
+            <li><b style="color: #38BDF8;">Organic Environmental Catalysts:</b> Seasonal wildfire spikes (Aug/Sep) and winter smog drive massive, organic customer acquisition spikes with zero proportional marketing cost inflations.</li>
+            <li><b style="color: #38BDF8;">Proven Product-Market Fit & Engagement:</b> Data demonstrates a direct correlation between worsening AQI and user app engagement, proving sticky long-term ecosystem retention among allergy and urban commuter personas.</li>
         </ul>
-        <p style="font-size: 16px; font-weight: bold; margin-bottom: 0; margin-top: 15px;">
+        <p style="font-size: 16px; font-weight: bold; margin-bottom: 0; margin-top: 15px; color: #38BDF8;">
             Targeting Series A capital to scale manufacturing capacity, expand urban retail channels, and capture high-pollution global megacities.
         </p>
     </div>
@@ -263,9 +272,9 @@ st.markdown("""
 # ------------------------------------------------------------------------------
 # 9. Interactive Data Table Inspector
 # ------------------------------------------------------------------------------
-with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
-    tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
-    with tab1:
-        st.dataframe(df_fin, use_container_width=True)
-    with tab2:
-        st.dataframe(filtered_demo, use_container_width=True)
+st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)")
+tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
+with tab1:
+    st.dataframe(df_fin, use_container_width=True)
+with tab2:
+    st.dataframe(filtered_demo, use_container_width=True)
