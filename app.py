@@ -189,10 +189,13 @@ st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
 # Brief Problem & History Block
 st.markdown("""
 <div style="background-color: #FFFFFF; border-radius: 16px; padding: 20px 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 6px solid #F43F5E; margin-bottom: 20px;">
-    <h4 style="margin: 0 0 8px 0; color: #1E293B;">⚠️ The Problem & Origin</h4>
-    <p style="margin: 0; color: #475569; font-size: 15px; line-height: 1.5;">
-        Urban air pollution and recurring wildfire seasons have created an escalating global health crisis, exposing commuters and asthma sufferers to dangerous levels of PM2.5. AeroZone was founded to solve this limitation of stationary home purifiers by delivering real-time, wearable, and data-driven respiratory protection on the go.
-    </p>
+    <h4 style="margin: 0 0 12px 0; color: #1E293B;">⚠️ The Problem & Solution</h4>
+    <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 15px; line-height: 1.6;">
+        <li style="margin-bottom: 8px;"><b>The Threat:</b> Urban smog, seasonal wildfires, and airborne pathogens compromise our daily health.</li>
+        <li style="margin-bottom: 8px;"><b>The Obsolete Solution:</b> Traditional N95 masks are suffocating, uncomfortable, and socially restrictive.</li>
+        <li style="margin-bottom: 8px;"><b>AeroZone:</b> A sleek, ergonomic collar projecting a silent updraft of 99.9% medical-grade clean air directly into the breathing zone.</li>
+        <li><b>Integrated Tech:</b> Bluetooth pairs with our proprietary mobile app for real-time AQI tracking and filter management.</li>
+    </ul>
 </div>
 """, unsafe_allow_html=True)
 
