@@ -199,7 +199,7 @@ with intro_col1:
     </div>
     """, unsafe_allow_html=True)
 
-with intro_row2:
+with intro_col2:
     img_row1, img_row2 = st.rows(2)
     with img_row1:
         try:
