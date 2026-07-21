@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 # ------------------------------------------------------------------------------
 # 1. Page Configuration & Professional Styling
 # ------------------------------------------------------------------------------
-st.set_page_config(page_title="AeroZone | Investor Pitch Dashboard", page_icon="🌪️", layout="wide")
+st.set_page_config(page_title="AeroZone | Deep Product & Customer Insights", page_icon="🌪️", layout="wide")
 
 st.markdown("""
     <style>
@@ -21,6 +21,14 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(9,30,66,0.15);
         margin-top: 20px;
         margin-bottom: 20px;
+    }
+    .insight-card {
+        background-color: #ffffff;
+        border-left: 5px solid #00b8d9;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -56,7 +64,7 @@ st.sidebar.subheader("📈 Environmental Filter")
 min_aqi, max_aqi = int(df_demo['Local_AQI_At_Purchase'].min()), int(df_demo['Local_AQI_At_Purchase'].max())
 selected_aqi = st.sidebar.slider("Purchase Air Quality Index (AQI)", min_aqi, max_aqi, (min_aqi, max_aqi))
 
-# Apply filters dynamically to demographic data
+# Apply filters dynamically
 filtered_demo = df_demo[
     (df_demo['Geographic_Region'].isin(selected_regions)) &
     (df_demo['Customer_Persona'].isin(selected_personas)) &
@@ -68,8 +76,8 @@ filtered_demo = df_demo[
 # 4. Hero KPIs (Top Row)
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
-st.markdown("### Series A Investor Pitch & Interactive Data Room")
-st.markdown("Explore deep real-time analytics below. *Tip: Use your cursor to zoom, pan, and hover over any chart element for exact figures.*")
+st.markdown("### Deep Product Intelligence & Customer Segment Analytics")
+st.markdown("Explore real-time data metrics below. *Tip: Use your cursor to zoom, pan, and hover over any chart element.*")
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("M36 Annual Recurring Revenue", f"${(df_fin['Subscription_Revenue'].iloc[-1] * 12):,.0f}", "+185% YoY")
@@ -83,12 +91,10 @@ st.markdown("---")
 # 5. Section 1: Financial Trajectory & Scalability Engine
 # ------------------------------------------------------------------------------
 st.subheader("📊 1. Financial Trajectory & Scalability Engine")
-st.markdown("Hover to view monthly breakdowns. Notice how recurring SaaS revenue dampens hardware seasonality spikes.")
 
 c1, c2 = st.columns(2)
 
 with c1:
-    # Interactive Revenue Hockey Stick
     fig_rev = go.Figure()
     fig_rev.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
                                   name='SaaS ARR Base', line=dict(color='#00875a', width=2)))
@@ -99,23 +105,18 @@ with c1:
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
-    # Combo Chart: Units Sold vs CAC Optimization
     fig_unit = make_subplots(specs=[[{"secondary_y": True}]])
     fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color='#00b8d9'), secondary_y=False)
     fig_unit.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color='#ffab00', width=3)), secondary_y=True)
     fig_unit.update_layout(title="Unit Volume Scale vs. Falling CAC", template="plotly_white", hovermode="x unified", height=400)
-    fig_unit.update_yaxes(title_text="Units Sold", secondary_y=False)
-    fig_unit.update_yaxes(title_text="CAC ($)", secondary_y=True)
     st.plotly_chart(fig_unit, use_container_width=True)
 
-# Additional Financial Insight Graph: Marketing Spend vs Total Revenue Efficiency
 fig_mkt = go.Figure()
 fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color='#ab47bc', width=2)))
 fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color='#2e7d32', width=2, dash='dot')))
 fig_mkt.update_layout(title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", template="plotly_white", height=320, hovermode="x unified")
 st.plotly_chart(fig_mkt, use_container_width=True)
 
-# Gross margin curve expansion
 fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS ($55/$45)", color_discrete_sequence=['#36b37e'])
 fig_margin.update_layout(template="plotly_white", height=300)
 st.plotly_chart(fig_margin, use_container_width=True)
@@ -123,15 +124,78 @@ st.plotly_chart(fig_margin, use_container_width=True)
 st.markdown("---")
 
 # ------------------------------------------------------------------------------
-# 6. Section 2: Market Demographics & Local Filter Intelligence
+# 6. Section 2: Deep Product & Customer Insights (New Granular Charts)
 # ------------------------------------------------------------------------------
-st.subheader("🎯 2. Market Dynamics & Local Segment Intelligence")
-st.markdown("The charts below dynamically adapt to the **Regional, Persona, and AQI filters** selected in the sidebar.")
+st.subheader("🔬 2. Deep Customer & Product Insights")
+st.markdown("Advanced analytics highlighting persona behavior, channel efficiency, and environmental trigger intensity.")
+
+# Row 1 of Deep Insights: App Engagement by Persona & Persona AQI Exposure
+in_c1, in_c2 = st.columns(2)
+
+with in_c1:
+    # Average App Engagement Score by Customer Persona
+    persona_eng = df_demo.groupby('Customer_Persona')['App_Engagement_Score'].mean().reset_index()
+    fig_eng = px.bar(
+        persona_eng, x='Customer_Persona', y='App_Engagement_Score', 
+        title="Sticky Ecosystem: Avg. App Engagement Score by Persona",
+        color='Customer_Persona', color_discrete_sequence=['#ff5630', '#00875a', '#0747a6']
+    )
+    fig_eng.update_layout(template="plotly_white", height=380, showlegend=False)
+    st.plotly_chart(fig_eng, use_container_width=True)
+
+with in_c2:
+    # Box Plot or Violin of AQI Exposure by Persona
+    fig_box = px.box(
+        df_demo, x='Customer_Persona', y='Local_AQI_At_Purchase',
+        title="Environmental Vulnerability: AQI Distribution per Persona",
+        color='Customer_Persona', color_discrete_sequence=['#ff5630', '#00875a', '#0747a6']
+    )
+    fig_box.update_layout(template="plotly_white", height=380, showlegend=False)
+    st.plotly_chart(fig_box, use_container_width=True)
+
+# Row 2 of Deep Insights: Channel Conversion Breakdown & Regional Distribution
+in_c3, in_c4 = st.columns(2)
+
+with in_c3:
+    # Acquisition Channels breakdown across personas (stacked bar)
+    chan_persona = df_demo.groupby(['Acquisition_Channel', 'Customer_Persona']).size().reset_index(name='Count')
+    fig_stack = px.bar(
+        chan_persona, x='Acquisition_Channel', y='Count', color='Customer_Persona',
+        title="Acquisition Channel Efficiency across Personas",
+        color_discrete_sequence=['#00b8d9', '#36b37e', '#ab47bc']
+    )
+    fig_stack.update_layout(template="plotly_white", height=380, xaxis={'categoryorder':'total descending'})
+    st.plotly_chart(fig_stack, use_container_width=True)
+
+with in_c4:
+    # Geographic Regional Sales Breakdown
+    reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
+    reg_dist.columns = ['Geographic_Region', 'Sales_Count']
+    fig_reg_dist = px.pie(
+        reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
+        title="Global Footprint: Sales Volume by Metropolitan Region",
+        color_discrete_sequence=px.colors.sequential.Tealgrn
+    )
+    fig_reg_dist.update_layout(template="plotly_white", height=380)
+    st.plotly_chart(fig_reg_dist, use_container_width=True)
+
+# Key takeaways callout box for product insights
+st.markdown("""
+    <div class="insight-card">
+        <b>💡 Key Product Insight:</b> Allergy/Asthma Sufferers demonstrate the highest average app engagement score (<b>8.75 / 10</b>) and experience severe pollution spikes (averaging <b>158.7 AQI</b> at purchase). This confirms that AeroZone acts as both a protective hardware collar and a critical health monitoring utility, securing long-term SaaS retention.
+    </div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ------------------------------------------------------------------------------
+# 7. Section 3: Filtered Market Dynamics & Environmental Catalyst
+# ------------------------------------------------------------------------------
+st.subheader("🎯 3. Filtered Market Dynamics & Environmental Intelligence")
 
 d1, d2 = st.columns(2)
 
 with d1:
-    # Sunburst Hierarchy based on active local filters
     if not filtered_demo.empty:
         fig_sun = px.sunburst(
             filtered_demo, 
@@ -143,10 +207,9 @@ with d1:
         fig_sun.update_layout(height=450)
         st.plotly_chart(fig_sun, use_container_width=True)
     else:
-        st.warning("No data matching current filter criteria. Please adjust sidebar selections.")
+        st.warning("No data matching current filter criteria.")
 
 with d2:
-    # Acquisition Channels Bar Chart
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
@@ -156,15 +219,6 @@ with d2:
     else:
         st.warning("No data available for channels.")
 
-# Additional Synthetic Data Insight Graph: Regional Sales Volume Distribution
-if not filtered_demo.empty:
-    reg_df = filtered_demo['Geographic_Region'].value_counts().reset_index()
-    reg_df.columns = ['Region', 'Orders']
-    fig_reg = px.bar(reg_df, x='Region', y='Orders', title="Geographic Sales Volume Distribution (Filtered)", color='Orders', color_continuous_scale='Teal')
-    fig_reg.update_layout(template="plotly_white", height=350)
-    st.plotly_chart(fig_reg, use_container_width=True)
-
-# Environmental Catalyst Scatter plot
 if not filtered_demo.empty:
     fig_aqi = px.scatter(
         filtered_demo, x='Local_AQI_At_Purchase', y='App_Engagement_Score', 
@@ -179,7 +233,7 @@ if not filtered_demo.empty:
 st.markdown("---")
 
 # ------------------------------------------------------------------------------
-# 7. Executive Pitch Conclusion & Investment Summary
+# 8. Executive Pitch Conclusion & Investment Summary
 # ------------------------------------------------------------------------------
 st.markdown("""
     <div class="summary-box">
@@ -200,7 +254,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------
-# 8. Interactive Data Table Inspector
+# 9. Interactive Data Table Inspector
 # ------------------------------------------------------------------------------
 with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
     tab1, tab2 = st.tabs(["Financial Projections (36M)", "Customer Demographics (100 Rows)"])
