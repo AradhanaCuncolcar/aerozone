@@ -9,28 +9,29 @@ from plotly.subplots import make_subplots
 # ------------------------------------------------------------------------------
 st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️", layout="wide")
 
-# Unified Modern Tech Color Palette (Slate, Deep Navy, Teal Accent, Muted Grays)
-COLOR_PRIMARY = "#0F172A"  # Deep Slate / Navy
-COLOR_SECONDARY = "#0EA5E9"  # Electric Teal / Blue
-COLOR_ACCENT = "#14B8A6"     # Clean Air Cyan
-COLOR_WARNING = "#F43F5E"    # Alert Red/Orange
-COLOR_BG = "#F8FAFC"         # Soft White / Light Slate
+# Sophisticated, High-End Investor Palette (Emerald/Teal Core with Harmonious Accents)
+COLOR_BG = "#F8FAFC"
+COLOR_PRIMARY = "#064E3B"      # Deep Forest Emerald / Navy replacement
+COLOR_SECONDARY = "#0D9488"    # Vibrant Teal
+COLOR_ACCENT = "#14B8A6"       # Mint / Cyan
+COLOR_WARNING = "#E11D48"      # Rich Crimson / Coral
+COLOR_MUTED = "#64748B"        # Slate Gray
 
 st.markdown(f"""
     <style>
     .stApp {{ background-color: {COLOR_BG}; }}
     h1, h2, h3, h4 {{ color: {COLOR_PRIMARY}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; }}
     
-    /* Executive Summary Callout Box - Fixed dark background with high-contrast bright text */
+    /* Executive Summary Callout Box */
     .summary-box {{
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        background: linear-gradient(135deg, #064E3B 0%, #0F766E 100%);
         color: #FFFFFF !important;
         padding: 35px;
         border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+        box-shadow: 0 10px 25px rgba(6, 78, 59, 0.2);
         margin-top: 25px;
         margin-bottom: 25px;
-        border-left: 6px solid {COLOR_SECONDARY};
+        border-left: 6px solid #2DD4BF;
     }}
     .summary-box h2, .summary-box p, .summary-box li, .summary-box b {{
         color: #FFFFFF !important;
@@ -114,27 +115,27 @@ c1, c2 = st.columns(2)
 with c1:
     fig_rev = go.Figure()
     fig_rev.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
-                                  name='SaaS ARR Base', line=dict(color=COLOR_ACCENT, width=2)))
-    fig_rev.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color=COLOR_SECONDARY, opacity=0.85))
+                                  name='SaaS ARR Base', line=dict(color="#0D9488", width=2)))
+    fig_rev.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Revenue'], name='Hardware Revenue', marker_color="#064E3B", opacity=0.85))
     fig_rev.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines+markers', 
-                                  name='Total Revenue', line=dict(color=COLOR_PRIMARY, width=3)))
+                                  name='Total Revenue', line=dict(color="#E11D48", width=3)))
     fig_rev.update_layout(title="36-Month Revenue Composition & Growth", template="plotly_white", hovermode="x unified", height=400, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
     fig_unit = make_subplots(specs=[[{"secondary_y": True}]])
-    fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#38BDF8"), secondary_y=False)
-    fig_unit.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color=COLOR_WARNING, width=3)), secondary_y=True)
+    fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#2DD4BF"), secondary_y=False)
+    fig_unit.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#D97706", width=3)), secondary_y=True)
     fig_unit.update_layout(title="Unit Volume Scale vs. Falling CAC", template="plotly_white", hovermode="x unified", height=400, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_unit, use_container_width=True)
 
 fig_mkt = go.Figure()
-fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color="#6366F1", width=2)))
-fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color=COLOR_ACCENT, width=2, dash='dot')))
+fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Marketing_Spend'], mode='lines', name='Marketing Spend ($)', line=dict(color="#7C3AED", width=2)))
+fig_mkt.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['Total_Gross_Revenue'], mode='lines', name='Total Gross Revenue ($)', line=dict(color="#059669", width=2, dash='dot')))
 fig_mkt.update_layout(title="Capital Efficiency: Marketing Spend Growth vs. Top-Line Revenue Scale", template="plotly_white", height=320, hovermode="x unified", font=dict(family="sans-serif", color=COLOR_PRIMARY))
 st.plotly_chart(fig_mkt, use_container_width=True)
 
-fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS ($55/$45)", color_discrete_sequence=[COLOR_ACCENT])
+fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS ($55/$45)", color_discrete_sequence=["#0D9488"])
 fig_margin.update_layout(template="plotly_white", height=300, font=dict(family="sans-serif", color=COLOR_PRIMARY))
 st.plotly_chart(fig_margin, use_container_width=True)
 
@@ -152,7 +153,7 @@ with in_c1:
     fig_eng = px.bar(
         persona_eng, x='Customer_Persona', y='App_Engagement_Score', 
         title="Sticky Ecosystem: Avg. App Engagement Score by Persona",
-        color='Customer_Persona', color_discrete_sequence=[COLOR_PRIMARY, COLOR_SECONDARY, COLOR_ACCENT]
+        color='Customer_Persona', color_discrete_sequence=["#064E3B", "#0D9488", "#2DD4BF"]
     )
     fig_eng.update_layout(template="plotly_white", height=380, showlegend=False, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_eng, use_container_width=True)
@@ -161,7 +162,7 @@ with in_c2:
     fig_box = px.box(
         df_demo, x='Customer_Persona', y='Local_AQI_At_Purchase',
         title="Environmental Vulnerability: AQI Distribution per Persona",
-        color='Customer_Persona', color_discrete_sequence=[COLOR_PRIMARY, COLOR_SECONDARY, COLOR_ACCENT]
+        color='Customer_Persona', color_discrete_sequence=["#064E3B", "#0D9488", "#2DD4BF"]
     )
     fig_box.update_layout(template="plotly_white", height=380, showlegend=False, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_box, use_container_width=True)
@@ -173,7 +174,7 @@ with in_c3:
     fig_stack = px.bar(
         chan_persona, x='Acquisition_Channel', y='Count', color='Customer_Persona',
         title="Acquisition Channel Efficiency across Personas",
-        color_discrete_sequence=[COLOR_SECONDARY, COLOR_ACCENT, "#818CF8"]
+        color_discrete_sequence=["#0D9488", "#14B8A6", "#818CF8"]
     )
     fig_stack.update_layout(template="plotly_white", height=380, xaxis={'categoryorder':'total descending'}, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_stack, use_container_width=True)
@@ -185,7 +186,7 @@ with in_c4:
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
         color='Geographic_Region',
-        color_discrete_sequence=['#0F172A', '#0EA5E9', '#14B8A6', '#6366F1', '#F43F5E', '#F59E0B', '#10B981']
+        color_discrete_sequence=['#064E3B', '#0D9488', '#14B8A6', '#2DD4BF', '#7C3AED', '#D97706', '#E11D48']
     )
     fig_reg_dist.update_layout(template="plotly_white", height=380, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_reg_dist, use_container_width=True)
@@ -211,7 +212,7 @@ with d1:
             filtered_demo, 
             path=['Geographic_Region', 'Customer_Persona', 'Acquisition_Channel'], 
             color='App_Engagement_Score', 
-            color_continuous_scale='Blues',
+            color_continuous_scale='Teal',
             title="Interactive Regional & Persona Breakdown"
         )
         fig_sun.update_layout(height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY))
@@ -223,12 +224,11 @@ with d2:
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
-        # UPGRADED: Mapped color to 'Channel' category so each horizontal bar gets a completely distinct individual color
         fig_chan = px.bar(
             chan_df, x='Count', y='Channel', orientation='h', 
             title="Top Acquisition Channels (Filtered)", 
             color='Channel',
-            color_discrete_sequence=['#0F172A', '#0EA5E9', '#14B8A6', '#6366F1', '#F43F5E', '#F59E0B', '#10B981', '#38BDF8', '#8B5CF6']
+            color_discrete_sequence=['#064E3B', '#0D9488', '#14B8A6', '#2DD4BF', '#7C3AED', '#D97706', '#E11D48', '#0284C7', '#6366F1']
         )
         fig_chan.update_layout(yaxis={'categoryorder':'total ascending'}, template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY), showlegend=False)
         st.plotly_chart(fig_chan, use_container_width=True)
@@ -240,9 +240,9 @@ if not filtered_demo.empty:
         filtered_demo, x='Local_AQI_At_Purchase', y='App_Engagement_Score', 
         color='Customer_Persona', size='Local_AQI_At_Purchase', hover_data=['Geographic_Region', 'Acquisition_Channel'],
         title="Environmental Trigger: Local AQI vs. App Engagement (Cursor to Zoom/Hover)",
-        color_discrete_sequence=[COLOR_WARNING, COLOR_ACCENT, COLOR_PRIMARY]
+        color_discrete_sequence=["#E11D48", "#0D9488", "#064E3B"]
     )
-    fig_aqi.add_vrect(x0=150, x1=300, fillcolor="#F43F5E", opacity=0.07, line_width=0, annotation_text="Severe Pollution Spike Zone", annotation_position="top left")
+    fig_aqi.add_vrect(x0=150, x1=300, fillcolor="#E11D48", opacity=0.07, line_width=0, annotation_text="Severe Pollution Spike Zone", annotation_position="top left")
     fig_aqi.update_layout(template="plotly_white", height=450, font=dict(family="sans-serif", color=COLOR_PRIMARY))
     st.plotly_chart(fig_aqi, use_container_width=True)
 
@@ -259,11 +259,11 @@ st.markdown("""
             By addressing global urban decay, recurring wildfire seasons, and chronic respiratory vulnerabilities, our personal air purifier collar unlocks three critical investor pillars:
         </p>
         <ul style="font-size: 15px; line-height: 1.6; color: #FFFFFF;">
-            <li><b style="color: #38BDF8;">Defensible Hardware-SaaS Hybrid Model:</b> Initial hardware margins expand significantly as manufacturing scales down from $65 to $45 COGS, while monthly subscriptions build a predictable, high-retention ARR base.</li>
-            <li><b style="color: #38BDF8;">Organic Environmental Catalysts:</b> Seasonal wildfire spikes (Aug/Sep) and winter smog drive massive, organic customer acquisition spikes with zero proportional marketing cost inflations.</li>
-            <li><b style="color: #38BDF8;">Proven Product-Market Fit & Engagement:</b> Data demonstrates a direct correlation between worsening AQI and user app engagement, proving sticky long-term ecosystem retention among allergy and urban commuter personas.</li>
+            <li><b style="color: #2DD4BF;">Defensible Hardware-SaaS Hybrid Model:</b> Initial hardware margins expand significantly as manufacturing scales down from $65 to $45 COGS, while monthly subscriptions build a predictable, high-retention ARR base.</li>
+            <li><b style="color: #2DD4BF;">Organic Environmental Catalysts:</b> Seasonal wildfire spikes (Aug/Sep) and winter smog drive massive, organic customer acquisition spikes with zero proportional marketing cost inflations.</li>
+            <li><b style="color: #2DD4BF;">Proven Product-Market Fit & Engagement:</b> Data demonstrates a direct correlation between worsening AQI and user app engagement, proving sticky long-term ecosystem retention among allergy and urban commuter personas.</li>
         </ul>
-        <p style="font-size: 16px; font-weight: bold; margin-bottom: 0; margin-top: 15px; color: #38BDF8;">
+        <p style="font-size: 16px; font-weight: bold; margin-bottom: 0; margin-top: 15px; color: #2DD4BF;">
             Targeting Series A capital to scale manufacturing capacity, expand urban retail channels, and capture high-pollution global megacities.
         </p>
     </div>
