@@ -246,7 +246,7 @@ with in_c4:
         'Beijing': '#A78BFA', 
         'New Delhi': '#FB7185', 
         'Los Angeles': '#FBBF24', 
-        'London': '#34D399'
+        'London': '#00FFFF'
     }
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
@@ -300,9 +300,9 @@ with d2:
             'Subway Posters': '#A78BFA',
             'Google Search': '#2DD4BF',
             'Facebook Ads': '#FB7185',
-            'Health Influencers': '#F43F5E',  # Distinct color
-            'Medical Blogs': '#60A5FA',       # Distinct color
-            'Airport Kiosks': '#F59E0B'       # Distinct color
+            'Health Influencers': '#00FFFF',  # Distinct color
+            'Medical Blogs': '#FF69B4',       # Distinct color
+            'Airport Kiosks': '#8B4513'       # Distinct color
         }
         
         fig_chan = px.bar(
