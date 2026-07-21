@@ -11,7 +11,7 @@ st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️",
 
 BG_COLOR = "#F4F8F7"
 PRIMARY_COLOR = "#1E293B"
-PASTEL_COLORS = ['#38BDF8', '#34D399', '#FBBF24', '#F43F5E', '#A78BFA', '#FB7185', '#2DD4BF', '#60A5FA']
+PASTEL_COLORS = ['#38BDF8', '#34D399', '#FBBF24', '#F43F5E', '#A78BFA', '#FB7185', '#2DD4BF', '#60A5FA', '#34D399']
 
 st.markdown(f"""
     <style>
@@ -113,7 +113,7 @@ st.subheader("📊 1. Financial Trajectory & Scalability Engine")
 c1, c2 = st.columns(2)
 
 with c1:
-    # Chart 1: 36-Month Revenue with Local Month/Date Filter applied & Axis Labels
+    # Revenue Chart with Local Month Filter applied
     fig_rev = go.Figure()
     fig_rev.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['Subscription_Revenue'], mode='lines', fill='tozeroy', 
                                   name='SaaS ARR Base', line=dict(color="#34D399", width=2)))
@@ -131,12 +131,12 @@ with c1:
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
-    # Chart 2: Unit Economics with Values on Bars & Axis Labels
+    # Unit Volume Scale with Local Month Filter applied & Values on Bars
     fig_unit = make_subplots(specs=[[{"secondary_y": True}]])
-    fig_unit.add_trace(go.Bar(x=df_fin['Month'], y=df_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA", text=df_fin['Hardware_Units_Sold'], texttemplate='%{text:,}', textposition='auto'), secondary_y=False)
-    fig_unit.add_trace(go.Scatter(x=df_fin['Month'], y=df_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#FBBF24", width=3)), secondary_y=True)
+    fig_unit.add_trace(go.Bar(x=filtered_fin['Month'], y=filtered_fin['Hardware_Units_Sold'], name="Units Sold", marker_color="#A78BFA", text=filtered_fin['Hardware_Units_Sold'], texttemplate='%{text:,}', textposition='auto'), secondary_y=False)
+    fig_unit.add_trace(go.Scatter(x=filtered_fin['Month'], y=filtered_fin['CAC'], name="CAC ($)", mode='lines+markers', line=dict(color="#FBBF24", width=3)), secondary_y=True)
     fig_unit.update_layout(
-        title="Unit Volume Scale vs. Falling CAC", 
+        title="Unit Volume Scale vs. Falling CAC (Filtered Timeline)", 
         xaxis_title="Month", 
         template="plotly_white", 
         hovermode="x unified", 
@@ -160,9 +160,9 @@ fig_mkt.update_layout(
 )
 st.plotly_chart(fig_mkt, use_container_width=True)
 
-# Chart 3: Gross Margin Expansion with Labeled Data Points & Axis Labels
-fig_margin = px.area(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS", text='Gross_Margin_%')
-fig_margin.update_traces(mode="lines+markers+text", textposition="top center", texttemplate="%{text:.1f}%")
+# Gross Margin Expansion without point values (lines + markers only)
+fig_margin = px.line(df_fin, x='Month', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS")
+fig_margin.update_traces(mode="lines+markers", line=dict(color="#34D399", width=3), marker=dict(size=6, color="#0EA5E9"))
 fig_margin.update_layout(
     xaxis_title="Month (1 to 36)", 
     yaxis_title="Gross Margin Percentage (%)", 
@@ -238,13 +238,23 @@ with in_c3:
 with in_c4:
     reg_dist = df_demo['Geographic_Region'].value_counts().reset_index()
     reg_dist.columns = ['Geographic_Region', 'Sales_Count']
+    # Custom color map with specific color for San Francisco and percentage-only labels
+    color_map = {
+        'New York': '#38BDF8', 
+        'San Francisco': '#F43F5E',  # Changed color for San Francisco
+        'Tokyo': '#14B8A6', 
+        'Beijing': '#A78BFA', 
+        'New Delhi': '#FB7185', 
+        'Los Angeles': '#FBBF24', 
+        'London': '#34D399'
+    }
     fig_reg_dist = px.pie(
         reg_dist, names='Geographic_Region', values='Sales_Count', hole=0.4,
         title="Global Footprint: Sales Volume by Metropolitan Region",
         color='Geographic_Region',
-        color_discrete_sequence=PASTEL_COLORS
+        color_map=color_map
     )
-    fig_reg_dist.update_traces(textposition='inside', textinfo='percent+label')
+    fig_reg_dist.update_traces(textposition='inside', textinfo='percent') # Removed names, kept percentage only
     fig_reg_dist.update_layout(template="plotly_white", height=380)
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
@@ -281,11 +291,25 @@ with d2:
     if not filtered_demo.empty:
         chan_df = filtered_demo['Acquisition_Channel'].value_counts().reset_index()
         chan_df.columns = ['Channel', 'Count']
+        
+        # Explicit unrepeated custom color mapping for all channels, giving unique colors to Health Influencers, Medical Blogs, and Airport Kiosks
+        channel_color_map = {
+            'Instagram Ads': '#38BDF8',
+            'TikTok': '#34D399',
+            'Travel Blogs': '#FBBF24',
+            'Subway Posters': '#A78BFA',
+            'Google Search': '#2DD4BF',
+            'Facebook Ads': '#FB7185',
+            'Health Influencers': '#F43F5E',  # Distinct color
+            'Medical Blogs': '#60A5FA',       # Distinct color
+            'Airport Kiosks': '#F59E0B'       # Distinct color
+        }
+        
         fig_chan = px.bar(
             chan_df, x='Count', y='Channel', orientation='h', 
             title="Top Acquisition Channels (Filtered)", 
             color='Channel',
-            color_discrete_sequence=PASTEL_COLORS,
+            color_discrete_map=channel_color_map,
             text='Count'
         )
         fig_chan.update_traces(texttemplate='%{text}', textposition='auto')
