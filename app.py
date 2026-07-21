@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 import datetime
 
 # ------------------------------------------------------------------------------
-# 1. Page Configuration & Premium "Bubble Card" Design System
+# 1. Page Configuration & Delightful Bright Pastel Design System
 # ------------------------------------------------------------------------------
 st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️", layout="wide")
 
@@ -51,14 +51,15 @@ st.markdown(f"""
         text-align: center;
     }}
     
-    /* Bubble Cards for Plotly Charts */
+    /* Bubble Cards for Plotly Charts - Fixed Overflow and Scrollbars */
     [data-testid="stPlotlyChart"] {{
         background-color: #FFFFFF;
         border-radius: 20px;
         box-shadow: 0 8px 16px rgba(0,0,0,0.04);
         border: 1px solid #E2E8F0;
-        padding: 15px;
+        padding: 10px;
         margin-bottom: 15px;
+        overflow: hidden !important; 
     }}
     
     /* Bubble Container for Section Headers */
@@ -201,7 +202,9 @@ with c1:
         template="plotly_white", 
         hovermode="x unified", 
         height=400,
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     st.plotly_chart(fig_rev, use_container_width=True)
 
@@ -215,7 +218,9 @@ with c2:
         template="plotly_white", 
         hovermode="x unified", 
         height=400,
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     fig_unit.update_yaxes(title_text="Hardware Units Sold", secondary_y=False)
     fig_unit.update_yaxes(title_text="Customer Acquisition Cost ($)", secondary_y=True)
@@ -231,7 +236,9 @@ fig_mkt.update_layout(
     template="plotly_white", 
     height=320, 
     hovermode="x unified",
-    margin=dict(l=20, r=20, t=50, b=20)
+    paper_bgcolor='rgba(0,0,0,0)', 
+    plot_bgcolor='rgba(0,0,0,0)',
+    margin=dict(t=50, l=10, r=10, b=10)
 )
 st.plotly_chart(fig_mkt, use_container_width=True)
 
@@ -242,7 +249,9 @@ fig_margin.update_layout(
     yaxis_title="Gross Margin Percentage (%)", 
     template="plotly_white", 
     height=350,
-    margin=dict(l=20, r=20, t=50, b=20)
+    paper_bgcolor='rgba(0,0,0,0)', 
+    plot_bgcolor='rgba(0,0,0,0)',
+    margin=dict(t=50, l=10, r=10, b=10)
 )
 st.plotly_chart(fig_margin, use_container_width=True)
 
@@ -270,7 +279,9 @@ with in_c1:
         template="plotly_white", 
         height=380, 
         showlegend=False,
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     st.plotly_chart(fig_eng, use_container_width=True)
 
@@ -287,7 +298,9 @@ with in_c2:
         template="plotly_white", 
         height=380, 
         showlegend=False,
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     st.plotly_chart(fig_box, use_container_width=True)
 
@@ -308,7 +321,9 @@ with in_c3:
         template="plotly_white", 
         height=380, 
         xaxis={'categoryorder':'total descending'},
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     st.plotly_chart(fig_stack, use_container_width=True)
 
@@ -322,7 +337,12 @@ with in_c4:
         color_discrete_map=REGION_COLOR_MAP
     )
     fig_reg_dist.update_traces(textposition='inside', textinfo='percent')
-    fig_reg_dist.update_layout(template="plotly_white", height=380, margin=dict(l=20, r=20, t=50, b=20))
+    fig_reg_dist.update_layout(
+        template="plotly_white", 
+        height=380, 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        margin=dict(t=50, l=10, r=10, b=10)
+    )
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
 st.markdown(f"""
@@ -348,7 +368,11 @@ with d1:
             color_continuous_scale='Teal',
             title="Interactive Regional & Persona Breakdown"
         )
-        fig_sun.update_layout(height=450, margin=dict(l=20, r=20, t=50, b=20))
+        fig_sun.update_layout(
+            height=450, 
+            paper_bgcolor='rgba(0,0,0,0)', 
+            margin=dict(t=50, l=10, r=10, b=10)
+        )
         st.plotly_chart(fig_sun, use_container_width=True)
     else:
         st.warning("No data matching current filter criteria.")
@@ -373,7 +397,9 @@ with d2:
             height=450, 
             yaxis={'categoryorder':'total ascending'}, 
             showlegend=False,
-            margin=dict(l=20, r=20, t=50, b=20)
+            paper_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, l=10, r=10, b=10)
         )
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
@@ -392,7 +418,9 @@ if not filtered_demo.empty:
         yaxis_title="App Engagement Score (1-10)", 
         template="plotly_white", 
         height=450,
-        margin=dict(l=20, r=20, t=50, b=20)
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, l=10, r=10, b=10)
     )
     st.plotly_chart(fig_aqi, use_container_width=True)
 
@@ -415,7 +443,9 @@ with a1:
             template="plotly_white", 
             hovermode="x unified",
             height=400,
-            margin=dict(l=20, r=20, t=50, b=20)
+            paper_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, l=10, r=10, b=10)
         )
         fig_churn.update_yaxes(title_text="Active Subscribers", secondary_y=False)
         fig_churn.update_yaxes(title_text="Churn Rate (%)", tickformat='.1%', secondary_y=True)
@@ -436,7 +466,15 @@ with a2:
         fig_heat = px.imshow(pivot_heat, text_auto=True, 
                              color_continuous_scale=['#F0F4F8', '#38BDF8', '#F43F5E'], 
                              title="Seasonality Heatmap: Hardware Units Sold")
-        fig_heat.update_layout(template="plotly_white", xaxis_title="Calendar Month", yaxis_title="Operational Year", height=400, margin=dict(l=20, r=20, t=50, b=20))
+        fig_heat.update_layout(
+            template="plotly_white", 
+            xaxis_title="Calendar Month", 
+            yaxis_title="Operational Year", 
+            height=400, 
+            paper_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, l=10, r=10, b=10)
+        )
         st.plotly_chart(fig_heat, use_container_width=True)
 
 a3, a4 = st.columns(2)
@@ -463,7 +501,14 @@ with a3:
                                  color_discrete_map=REGION_COLOR_MAP,
                                  projection="natural earth")
         fig_map.update_traces(marker=dict(line=dict(width=1, color='DarkSlateGrey')))
-        fig_map.update_layout(template="plotly_white", height=400, margin=dict(l=20, r=20, t=50, b=20), geo=dict(showland=True, landcolor="#F4F8F7", showcountries=True, countrycolor="#E2E8F0"))
+        fig_map.update_layout(
+            template="plotly_white", 
+            height=400, 
+            paper_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, l=10, r=10, b=10), 
+            geo=dict(showland=True, landcolor="#F4F8F7", showcountries=True, countrycolor="#E2E8F0")
+        )
         st.plotly_chart(fig_map, use_container_width=True)
 
 with a4:
@@ -472,7 +517,16 @@ with a4:
                          color='Acquisition_Channel', 
                          title="Channel Conversion Efficiency (Engagement Spread)", 
                          color_discrete_map=CHANNEL_COLOR_MAP)
-        fig_eff.update_layout(template="plotly_white", xaxis_title="Acquisition Channel", yaxis_title="App Engagement Score", height=400, showlegend=False, margin=dict(l=20, r=20, t=50, b=20))
+        fig_eff.update_layout(
+            template="plotly_white", 
+            xaxis_title="Acquisition Channel", 
+            yaxis_title="App Engagement Score", 
+            height=400, 
+            showlegend=False, 
+            paper_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, l=10, r=10, b=10)
+        )
         st.plotly_chart(fig_eff, use_container_width=True)
 
 
