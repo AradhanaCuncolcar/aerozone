@@ -202,12 +202,12 @@ with intro_col1:
 with intro_col2:
     # Stacked vertically in a single column to eliminate empty side-by-side space
     try:
-        st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True, width=150)
+        st.image("lifestyle_user.png", caption="In-Action Lifestyle", width=250)
     except Exception:
         st.info("Place 'lifestyle_user.png' in directory.")
         
     try:
-        st.image("product_render.png", caption="Hardware Design", use_container_width=True, width=150)
+        st.image("product_render.png", caption="Hardware Design", width=250)
     except Exception:
         st.info("Place 'product_render.png' in directory.")
 
