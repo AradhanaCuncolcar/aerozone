@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 import datetime
 
 # ------------------------------------------------------------------------------
-# 1. Page Configuration & Delightful Bright Pastel Design System
+# 1. Page Configuration & Premium "Bubble Card" Design System
 # ------------------------------------------------------------------------------
 st.set_page_config(page_title="AeroZone | Investor Portal", page_icon="🌪️", layout="wide")
 
@@ -36,12 +36,9 @@ CHANNEL_COLOR_MAP = {
 
 st.markdown(f"""
     <style>
-    /* Overall App Background - Soft Slate Gray for contrast */
     .stApp {{ background-color: #F0F4F8; }}
-    
     h1, h2, h3, h4 {{ color: {PRIMARY_COLOR}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; }}
     
-    /* Bubble Cards for KPI Metrics */
     [data-testid="stMetric"] {{
         background-color: #FFFFFF;
         border-radius: 20px;
@@ -51,7 +48,6 @@ st.markdown(f"""
         text-align: center;
     }}
     
-    /* Bubble Cards for Plotly Charts - Fixed Overflow and Scrollbars */
     [data-testid="stPlotlyChart"] {{
         background-color: #FFFFFF;
         border-radius: 20px;
@@ -62,7 +58,6 @@ st.markdown(f"""
         overflow: hidden !important; 
     }}
     
-    /* Bubble Container for Section Headers */
     .section-header {{
         background-color: #FFFFFF;
         padding: 15px 25px;
@@ -76,7 +71,15 @@ st.markdown(f"""
     }}
     .section-header h3 {{ margin: 0; padding: 0; }}
     
-    /* Executive Summary Box */
+    .intro-card {{
+        background-color: #FFFFFF;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+        border: 1px solid #E2E8F0;
+        height: 100%;
+    }}
+
     .summary-box {{
         background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 100%);
         color: #FFFFFF !important;
@@ -91,7 +94,6 @@ st.markdown(f"""
         color: #FFFFFF !important;
     }}
     
-    /* Insight Cards */
     .insight-card {{
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -128,12 +130,12 @@ except FileNotFoundError:
 # ------------------------------------------------------------------------------
 # 3. Global & Local Interactive Filters
 # ------------------------------------------------------------------------------
-st.sidebar.image("https://cdn-icons-png.magnific.com/256/18122/18122832.png?semt=ais_white_label.png", width=65)
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3714/3714959.png", width=65)
 st.sidebar.title("AeroZone Controls")
 st.sidebar.markdown("Dynamic filtering engine for granular market and regional due diligence.")
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📅 Financial Timeline")
+st.sidebar.subheader("📅 Financial Timeline (Date/Month/Year)")
 min_date = df_fin['Date'].min().to_pydatetime()
 max_date = df_fin['Date'].max().to_pydatetime()
 selected_dates = st.sidebar.slider(
@@ -153,7 +155,6 @@ st.sidebar.subheader("📈 Environmental Filter")
 min_aqi, max_aqi = int(df_demo['Local_AQI_At_Purchase'].min()), int(df_demo['Local_AQI_At_Purchase'].max())
 selected_aqi = st.sidebar.slider("Purchase Air Quality Index (AQI)", min_aqi, max_aqi, (min_aqi, max_aqi))
 
-# Apply Filters
 filtered_fin = df_fin[(df_fin['Date'] >= pd.to_datetime(selected_dates[0])) & (df_fin['Date'] <= pd.to_datetime(selected_dates[1]))]
 
 filtered_demo = df_demo[
@@ -163,16 +164,46 @@ filtered_demo = df_demo[
     (df_demo['Local_AQI_At_Purchase'] <= selected_aqi[1])
 ]
 
+if not filtered_fin.empty:
+    dt_pad_start = filtered_fin['Date'].min() - pd.Timedelta(days=15)
+    dt_pad_end = filtered_fin['Date'].max() + pd.Timedelta(days=15)
+else:
+    dt_pad_start, dt_pad_end = None, None
+
 # ------------------------------------------------------------------------------
-# 4. Hero Intro & KPIs (Top Row)
+# 4. Hero Intro, Product Showcase & KPIs
 # ------------------------------------------------------------------------------
 st.title("🌪️ AeroZone: Wearable Personal Air Purifier Collar")
-
-st.markdown("""
-**About AeroZone:** AeroZone is a next-generation wearable personal air purifier collar engineered for urban commuters, frequent travelers, and asthma sufferers. By actively filtering PM2.5, VOCs, and allergens from the user's immediate breathing zone, it offers real-time health protection. Paired with our proprietary SaaS mobile app, users receive personalized respiratory health insights, live environmental pollution alerts, and automated filter-replacement subscriptions.
-""")
-
 st.markdown("### Series A Investor Pitch & Deep-Dive Data Room")
+
+# Side-by-side Intro layout with Product Images
+intro_col1, intro_col2 = st.columns([1.2, 1])
+
+with intro_col1:
+    st.markdown("""
+    <div class="intro-card">
+        <h3>💡 Product Vision & Innovation</h3>
+        <p><b>AeroZone</b> is a next-generation wearable personal air purifier collar engineered for urban commuters, frequent travelers, and allergy sufferers.</p>
+        <p>By actively filtering PM2.5, VOCs, and airborne allergens directly from the user's breathing zone, it establishes a personal clean-air sanctuary anywhere in the world.</p>
+        <p><b>The Ecosystem:</b> Paired with our proprietary SaaS mobile app, users receive real-time respiratory health analytics, live environmental AQI tracking, and automated filter-replacement subscriptions that power our compounding recurring revenue engine.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with intro_col2:
+    # Creating inner columns for the two images so they sit nicely side-by-side or stacked
+    img_col1, img_col2 = st.columns(2)
+    with img_col1:
+        try:
+            st.image("lifestyle_user.png", caption="In-Action Lifestyle", use_container_width=True)
+        except Exception:
+            st.info("Place 'lifestyle_user.png' in directory.")
+    with img_col2:
+        try:
+            st.image("product_render.png", caption="Hardware Design", use_container_width=True)
+        except Exception:
+            st.info("Place 'product_render.png' in directory.")
+
+st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("Explore positive, vibrant, and fully-labeled analytics below. *Tip: Hover, pan, and zoom using your cursor.*")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -204,8 +235,10 @@ with c1:
         height=400,
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
+    fig_rev.update_xaxes(range=[dt_pad_start, dt_pad_end], automargin=True)
+    fig_rev.update_yaxes(automargin=True)
     st.plotly_chart(fig_rev, use_container_width=True)
 
 with c2:
@@ -220,10 +253,11 @@ with c2:
         height=400,
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
-    fig_unit.update_yaxes(title_text="Hardware Units Sold", secondary_y=False)
-    fig_unit.update_yaxes(title_text="Customer Acquisition Cost ($)", secondary_y=True)
+    fig_unit.update_xaxes(range=[dt_pad_start, dt_pad_end], automargin=True)
+    fig_unit.update_yaxes(title_text="Hardware Units Sold", secondary_y=False, automargin=True)
+    fig_unit.update_yaxes(title_text="Customer Acquisition Cost ($)", secondary_y=True, automargin=True)
     st.plotly_chart(fig_unit, use_container_width=True)
 
 fig_mkt = go.Figure()
@@ -238,8 +272,10 @@ fig_mkt.update_layout(
     hovermode="x unified",
     paper_bgcolor='rgba(0,0,0,0)', 
     plot_bgcolor='rgba(0,0,0,0)',
-    margin=dict(t=50, l=10, r=10, b=10)
+    margin=dict(t=50, l=20, r=20, b=30)
 )
+fig_mkt.update_xaxes(range=[dt_pad_start, dt_pad_end], automargin=True)
+fig_mkt.update_yaxes(automargin=True)
 st.plotly_chart(fig_mkt, use_container_width=True)
 
 fig_margin = px.line(df_fin, x='Date', y='Gross_Margin_%', title="Gross Margin Expansion (%) Driven by Lower Year 2/3 COGS")
@@ -251,8 +287,10 @@ fig_margin.update_layout(
     height=350,
     paper_bgcolor='rgba(0,0,0,0)', 
     plot_bgcolor='rgba(0,0,0,0)',
-    margin=dict(t=50, l=10, r=10, b=10)
+    margin=dict(t=50, l=20, r=20, b=30)
 )
+fig_margin.update_xaxes(range=[dt_pad_start, dt_pad_end], automargin=True)
+fig_margin.update_yaxes(automargin=True)
 st.plotly_chart(fig_margin, use_container_width=True)
 
 
@@ -281,8 +319,10 @@ with in_c1:
         showlegend=False,
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
+    fig_eng.update_xaxes(automargin=True)
+    fig_eng.update_yaxes(automargin=True)
     st.plotly_chart(fig_eng, use_container_width=True)
 
 with in_c2:
@@ -300,8 +340,10 @@ with in_c2:
         showlegend=False,
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
+    fig_box.update_xaxes(automargin=True)
+    fig_box.update_yaxes(automargin=True)
     st.plotly_chart(fig_box, use_container_width=True)
 
 in_c3, in_c4 = st.columns(2)
@@ -323,8 +365,10 @@ with in_c3:
         xaxis={'categoryorder':'total descending'},
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
+    fig_stack.update_xaxes(tickangle=-45, automargin=True)
+    fig_stack.update_yaxes(automargin=True)
     st.plotly_chart(fig_stack, use_container_width=True)
 
 with in_c4:
@@ -341,7 +385,7 @@ with in_c4:
         template="plotly_white", 
         height=380, 
         paper_bgcolor='rgba(0,0,0,0)', 
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
     st.plotly_chart(fig_reg_dist, use_container_width=True)
 
@@ -371,7 +415,7 @@ with d1:
         fig_sun.update_layout(
             height=450, 
             paper_bgcolor='rgba(0,0,0,0)', 
-            margin=dict(t=50, l=10, r=10, b=10)
+            margin=dict(t=50, l=20, r=20, b=30)
         )
         st.plotly_chart(fig_sun, use_container_width=True)
     else:
@@ -399,8 +443,10 @@ with d2:
             showlegend=False,
             paper_bgcolor='rgba(0,0,0,0)', 
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, l=10, r=10, b=10)
+            margin=dict(t=50, l=20, r=20, b=30)
         )
+        fig_chan.update_xaxes(automargin=True)
+        fig_chan.update_yaxes(automargin=True)
         st.plotly_chart(fig_chan, use_container_width=True)
     else:
         st.warning("No data available for channels.")
@@ -420,8 +466,10 @@ if not filtered_demo.empty:
         height=450,
         paper_bgcolor='rgba(0,0,0,0)', 
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(t=50, l=10, r=10, b=10)
+        margin=dict(t=50, l=20, r=20, b=30)
     )
+    fig_aqi.update_xaxes(automargin=True)
+    fig_aqi.update_yaxes(automargin=True)
     st.plotly_chart(fig_aqi, use_container_width=True)
 
 
@@ -445,10 +493,11 @@ with a1:
             height=400,
             paper_bgcolor='rgba(0,0,0,0)', 
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, l=10, r=10, b=10)
+            margin=dict(t=50, l=20, r=20, b=30)
         )
-        fig_churn.update_yaxes(title_text="Active Subscribers", secondary_y=False)
-        fig_churn.update_yaxes(title_text="Churn Rate (%)", tickformat='.1%', secondary_y=True)
+        fig_churn.update_xaxes(range=[dt_pad_start, dt_pad_end], automargin=True)
+        fig_churn.update_yaxes(title_text="Active Subscribers", secondary_y=False, automargin=True)
+        fig_churn.update_yaxes(title_text="Churn Rate (%)", tickformat='.1%', secondary_y=True, automargin=True)
         st.plotly_chart(fig_churn, use_container_width=True)
 
 with a2:
@@ -473,8 +522,10 @@ with a2:
             height=400, 
             paper_bgcolor='rgba(0,0,0,0)', 
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, l=10, r=10, b=10)
+            margin=dict(t=50, l=20, r=20, b=30)
         )
+        fig_heat.update_xaxes(automargin=True)
+        fig_heat.update_yaxes(automargin=True)
         st.plotly_chart(fig_heat, use_container_width=True)
 
 a3, a4 = st.columns(2)
@@ -506,7 +557,7 @@ with a3:
             height=400, 
             paper_bgcolor='rgba(0,0,0,0)', 
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, l=10, r=10, b=10), 
+            margin=dict(t=50, l=20, r=20, b=30), 
             geo=dict(showland=True, landcolor="#F4F8F7", showcountries=True, countrycolor="#E2E8F0")
         )
         st.plotly_chart(fig_map, use_container_width=True)
@@ -525,8 +576,10 @@ with a4:
             showlegend=False, 
             paper_bgcolor='rgba(0,0,0,0)', 
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, l=10, r=10, b=10)
+            margin=dict(t=50, l=20, r=20, b=30)
         )
+        fig_eff.update_xaxes(tickangle=-45, automargin=True)
+        fig_eff.update_yaxes(automargin=True)
         st.plotly_chart(fig_eff, use_container_width=True)
 
 
