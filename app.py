@@ -643,3 +643,30 @@ with st.expander("🔍 Interactive Data Tables (Due Diligence Inspector)"):
         st.dataframe(display_fin, use_container_width=True)
     with tab2:
         st.dataframe(filtered_demo, use_container_width=True)
+
+
+# ------------------------------------------------------------------------------
+# 11. Seeking Money & Equity (Investment Ask)
+# ------------------------------------------------------------------------------
+st.markdown("""
+    <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color: #FFFFFF; padding: 35px; border-radius: 20px; box-shadow: 0 12px 25px rgba(30, 41, 59, 0.25); margin-top: 30px; margin-bottom: 25px; border-left: 8px solid #38BDF8;">
+        <h2 style="color: #FFFFFF; margin-top: 0; font-size: 24px;">💰 Series A Funding & Equity Offering</h2>
+        <p style="font-size: 16px; line-height: 1.6; color: #94A3B8;">
+            AeroZone is currently opening its Series A round to accelerate global retail expansion, scale automated manufacturing capacity, and deepen our proprietary health SaaS ecosystem.
+        </p>
+        <div style="display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap;">
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <span style="font-size: 13px; color: #38BDF8; text-transform: uppercase; font-weight: bold; display: block;">Target Capital Raise</span>
+                <span style="font-size: 22px; color: #FFFFFF; font-weight: bold;">$15,000,000 USD</span>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <span style="font-size: 13px; color: #34D399; text-transform: uppercase; font-weight: bold; display: block;">Equity Offered</span>
+                <span style="font-size: 22px; color: #FFFFFF; font-weight: bold;">15.0% Preferred Stock</span>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <span style="font-size: 13px; color: #FBBF24; text-transform: uppercase; font-weight: bold; display: block;">Valuation Type</span>
+                <span style="font-size: 22px; color: #FFFFFF; font-weight: bold;">$100M Pre-Money</span>
+            </div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
